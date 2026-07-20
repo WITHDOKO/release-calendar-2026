@@ -46,6 +46,13 @@
   .view-toggle{ display:flex; background:var(--panel-2); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
   .view-toggle button{ background:transparent; border:none; color:var(--text-dim); padding:8px 14px; font-size:13px; font-weight:600; }
   .view-toggle button.active{ background:var(--accent); color:#fff; }
+  .month-tabs{ display:flex; gap:6px; flex-wrap:wrap; padding:12px 22px 0; }
+  .month-tab{ background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim); border-radius:9px;
+    padding:7px 12px; font-size:13px; font-weight:700; position:relative; transition:.12s; }
+  .month-tab:hover{ border-color:var(--accent); color:var(--text); }
+  .month-tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
+  .month-tab .cnt{ margin-left:5px; font-size:10px; opacity:.85; font-weight:700; }
+  .month-tab.empty{ opacity:.45; }
   .filters{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
   .filter-chip{ background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim); padding:6px 12px;
     border-radius:20px; font-size:12px; font-weight:600; display:inline-flex; align-items:center; gap:6px; }
@@ -157,6 +164,7 @@
   <div class="filters" id="statusFilters"></div>
 </div>
 
+<div class="month-tabs" id="monthTabs"></div>
 <div class="stats" id="stats"></div>
 <div class="tbd-panel" id="tbdPanel" style="display:none"></div>
 
@@ -233,8 +241,16 @@ function pass(e){ if(!activeStatus[e.status]) return false;
 function dated(){ return DATA.filter(e=>!e.tbd&&pass(e)); }
 function tbd(){ return DATA.filter(e=>e.tbd&&pass(e)); }
 
-function render(){ document.getElementById('monthTitle').textContent=(curMonth+1)+'월'; stats(); renderTbd();
+function render(){ document.getElementById('monthTitle').textContent=(curMonth+1)+'월'; monthTabs(); stats(); renderTbd();
   if(view==='cal') cal(); else list(); }
+function monthTabs(){
+  const counts={}; dated().forEach(e=>{ const m=parseInt(e.date.slice(5,7)); counts[m]=(counts[m]||0)+1; });
+  const w=document.getElementById('monthTabs');
+  w.innerHTML=Array.from({length:12},(_,i)=>{ const mo=i+1; const c=counts[mo]||0;
+    return `<button class="month-tab ${curMonth===i?'active':''} ${c===0?'empty':''}" onclick="setMonth(${i})">${mo}월${c?`<span class="cnt">${c}</span>`:''}</button>`;
+  }).join('');
+}
+function setMonth(i){ curYear=2026; curMonth=i; if(view!=='cal'){view='cal'; document.getElementById('viewCal').classList.add('active'); document.getElementById('viewList').classList.remove('active');} render(); window.scrollTo({top:0,behavior:'smooth'}); }
 function stats(){ const de=dated();
   const me=de.filter(e=>{const d=new Date(e.date);return d.getFullYear()===curYear&&d.getMonth()===curMonth;});
   const c={plan:0,fix:0,done:0,hold:0}; DATA.filter(pass).forEach(e=>c[e.status]++);
