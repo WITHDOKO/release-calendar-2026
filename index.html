@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 음원 발매 일정</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+  :root{
+    --bg:#0f1117; --panel:#171a23; --panel-2:#1e222e; --line:#2a2f3d;
+    --text:#e8eaf0; --text-dim:#9aa1b3; --text-mute:#6b7280;
+    --accent:#6c8cff; --accent-soft:rgba(108,140,255,.15);
+    --s-plan:#f5a623;--s-plan-bg:rgba(245,166,35,.16);
+    --s-fix:#3ea6ff;--s-fix-bg:rgba(62,166,255,.16);
+    --s-done:#2ecc71;--s-done-bg:rgba(46,204,113,.16);
+    --s-hold:#8b93a7;--s-hold-bg:rgba(139,147,167,.16);
+    --star:#ffcf3f; --radius:14px; --shadow:0 8px 30px rgba(0,0,0,.35);
+    --font:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  }
+  html,body{ background:var(--bg); color:var(--text); font-family:var(--font); }
+  body{ padding:0 0 40px; }
+  button{ font-family:inherit; cursor:pointer; }
+  .topbar{ position:sticky; top:0; z-index:40; background:rgba(15,17,23,.85); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line); padding:14px 22px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand .logo{ width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,#6c8cff,#a86cff);
+    display:grid; place-items:center; font-size:20px; box-shadow:0 4px 14px rgba(108,140,255,.4); }
+  .brand h1{ font-size:17px; font-weight:800; letter-spacing:-.3px; }
+  .brand p{ font-size:12px; color:var(--text-dim); margin-top:1px; }
+  .readonly-badge{ font-size:11px; font-weight:700; color:var(--s-fix); background:var(--s-fix-bg); padding:4px 10px; border-radius:20px; }
+  .spacer{ flex:1; }
+  .search{ position:relative; }
+  .search input{ background:var(--panel-2); border:1px solid var(--line); color:var(--text); border-radius:10px;
+    padding:9px 12px 9px 34px; font-size:13px; width:200px; outline:none; }
+  .search input:focus{ border-color:var(--accent); }
+  .search svg{ position:absolute; left:11px; top:50%; transform:translateY(-50%); opacity:.5; }
+  .btn{ background:var(--panel-2); border:1px solid var(--line); color:var(--text); padding:9px 13px; border-radius:10px;
+    font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:7px; transition:.15s; white-space:nowrap; }
+  .btn:hover{ border-color:var(--accent); background:var(--accent-soft); }
+  .controls{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:16px 22px 6px; }
+  .month-nav{ display:flex; align-items:center; gap:6px; }
+  .month-nav button{ width:34px; height:34px; border-radius:9px; background:var(--panel-2); border:1px solid var(--line);
+    color:var(--text); font-size:16px; display:grid; place-items:center; }
+  .month-nav button:hover{ border-color:var(--accent); }
+  .month-title{ font-size:22px; font-weight:800; min-width:150px; text-align:center; letter-spacing:-.5px; }
+  .view-toggle{ display:flex; background:var(--panel-2); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .view-toggle button{ background:transparent; border:none; color:var(--text-dim); padding:8px 14px; font-size:13px; font-weight:600; }
+  .view-toggle button.active{ background:var(--accent); color:#fff; }
+  .filters{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .filter-chip{ background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim); padding:6px 12px;
+    border-radius:20px; font-size:12px; font-weight:600; display:inline-flex; align-items:center; gap:6px; }
+  .filter-chip .dot{ width:9px; height:9px; border-radius:50%; }
+  .filter-chip.active{ color:var(--text); border-color:currentColor; }
+  .filter-chip.off{ opacity:.4; text-decoration:line-through; }
+  select.filter-sel{ background:var(--panel-2); border:1px solid var(--line); color:var(--text); border-radius:10px;
+    padding:8px 12px; font-size:13px; outline:none; }
+  .stats{ display:flex; gap:10px; flex-wrap:wrap; padding:8px 22px 0; }
+  .stat{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px 14px; font-size:12px; color:var(--text-dim); }
+  .stat b{ color:var(--text); font-size:16px; margin-right:5px; }
+  .tbd-panel{ margin:12px 22px 0; background:var(--panel); border:1px dashed var(--line); border-radius:12px; padding:12px 16px; }
+  .tbd-panel h4{ font-size:12px; color:var(--s-hold); margin-bottom:8px; font-weight:800; letter-spacing:.3px; }
+  .tbd-list{ display:flex; flex-wrap:wrap; gap:8px; }
+  .tbd-item{ background:var(--s-hold-bg); border:1px solid var(--line); border-radius:8px; padding:6px 10px; font-size:12px; cursor:pointer; }
+  .tbd-item b{ color:var(--text); } .tbd-item span{ color:var(--text-dim); }
+  .cal-wrap{ padding:14px 22px; }
+  .weekdays{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:8px; }
+  .weekdays div{ text-align:center; font-size:12px; font-weight:700; color:var(--text-dim); padding:4px; }
+  .weekdays div.sun{ color:#ff7a7a; } .weekdays div.sat{ color:#7ab8ff; }
+  .grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+  .cell{ background:var(--panel); border:1px solid var(--line); border-radius:12px; min-height:120px; padding:8px;
+    display:flex; flex-direction:column; gap:5px; position:relative; transition:.12s; }
+  .cell.other{ opacity:.32; }
+  .cell.today{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+  .cell.holiday .num{ color:#ff7a7a !important; }
+  .cell .num{ font-size:13px; font-weight:700; color:var(--text-dim); display:flex; justify-content:space-between; align-items:center; }
+  .cell .holi{ font-size:10px; color:#ff7a7a; font-weight:600; }
+  .cell.sun .num{ color:#ff7a7a; } .cell.sat .num{ color:#7ab8ff; }
+  .event{ border-radius:8px; padding:5px 8px; font-size:12px; cursor:pointer; border-left:3px solid; line-height:1.3;
+    background:var(--panel-2); transition:.12s; overflow:hidden; }
+  .event:hover{ transform:translateY(-1px); box-shadow:0 3px 10px rgba(0,0,0,.3); }
+  .event .ev-top{ display:flex; align-items:center; gap:4px; }
+  .event .ev-time{ font-size:10px; font-weight:800; padding:1px 5px; border-radius:5px; background:rgba(255,255,255,.06); color:var(--text-dim); }
+  .event .ev-artist{ font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .event .ev-title{ color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:11px; }
+  .event .ev-meta{ display:flex; align-items:center; gap:5px; margin-top:3px; font-size:10px; color:var(--text-mute); }
+  .event .star{ color:var(--star); }
+  .event.plan{ border-color:var(--s-plan); } .event.plan .stag{ color:var(--s-plan); }
+  .event.fix{ border-color:var(--s-fix); } .event.fix .stag{ color:var(--s-fix); }
+  .event.done{ border-color:var(--s-done); opacity:.72; } .event.done .stag{ color:var(--s-done); }
+  .event.hold{ border-color:var(--s-hold); } .event.hold .stag{ color:var(--s-hold); }
+  .list-wrap{ padding:14px 22px; display:none; }
+  .list-month{ margin-bottom:26px; }
+  .list-month h3{ font-size:15px; font-weight:800; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--line); }
+  table{ width:100%; border-collapse:collapse; }
+  th{ text-align:left; font-size:12px; color:var(--text-dim); font-weight:700; padding:8px 12px; border-bottom:1px solid var(--line); }
+  td{ padding:11px 12px; font-size:13px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  tr.row:hover{ background:var(--panel); cursor:pointer; }
+  .pill{ display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
+  .pill .dot{ width:7px; height:7px; border-radius:50%; }
+  .pill.plan{ background:var(--s-plan-bg); color:var(--s-plan); } .pill.plan .dot{ background:var(--s-plan); }
+  .pill.fix{ background:var(--s-fix-bg); color:var(--s-fix); } .pill.fix .dot{ background:var(--s-fix); }
+  .pill.done{ background:var(--s-done-bg); color:var(--s-done); } .pill.done .dot{ background:var(--s-done); }
+  .pill.hold{ background:var(--s-hold-bg); color:var(--s-hold); } .pill.hold .dot{ background:var(--s-hold); }
+  .tag-label{ display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:6px; background:var(--accent-soft); color:var(--accent); }
+  .tag-note{ display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:6px; margin-left:5px; }
+  .note-open{ background:rgba(46,204,113,.14); color:#2ecc71; }
+  .note-closed{ background:rgba(245,166,35,.14); color:#f5a623; }
+  .empty{ text-align:center; color:var(--text-mute); padding:60px 20px; font-size:14px; }
+  /* 읽기전용 상세 모달 */
+  .overlay{ position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(3px); display:none; place-items:center; z-index:100; padding:20px; }
+  .overlay.open{ display:grid; }
+  .detail{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); width:100%; max-width:420px; padding:24px; }
+  .detail .d-head{ display:flex; align-items:flex-start; gap:10px; margin-bottom:16px; }
+  .detail .d-artist{ font-size:20px; font-weight:800; }
+  .detail .d-title{ color:var(--text-dim); font-size:14px; margin-top:3px; }
+  .detail .d-row{ display:flex; gap:12px; padding:9px 0; border-top:1px solid var(--line); font-size:13px; }
+  .detail .d-row .k{ width:80px; color:var(--text-dim); flex:0 0 auto; font-weight:600; }
+  .detail .d-row .v{ color:var(--text); }
+  .detail .d-close{ margin-top:18px; width:100%; justify-content:center; }
+  .footer-note{ text-align:center; font-size:11px; color:var(--text-mute); padding:24px; line-height:1.7; }
+  @media (max-width:720px){ .cell{ min-height:auto; } .month-title{ font-size:18px; min-width:100px; } .search input{ width:130px; } .weekdays div{ font-size:10px; } }
+  @media print{ .topbar,.controls,.view-toggle,.search,.btn,.filters{ display:none !important; }
+    body{ background:#fff; color:#000; } .cell{ border-color:#ccc; background:#fff; min-height:100px; }
+    .event{ background:#f4f4f4; color:#000; } .event.done{ opacity:1; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="logo">🎵</div>
+    <div><h1>음원 발매 일정</h1><p>2026 Release Calendar</p></div>
+  </div>
+  <span class="readonly-badge">👁 보기 전용</span>
+  <div class="spacer"></div>
+  <div class="search">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input id="searchInput" placeholder="아티스트·곡·담당 검색">
+  </div>
+  <button class="btn" onclick="window.print()">🖨 인쇄 / PDF</button>
+</div>
+
+<div class="controls">
+  <div class="month-nav">
+    <button onclick="changeMonth(-1)">‹</button>
+    <div class="month-title" id="monthTitle"></div>
+    <button onclick="changeMonth(1)">›</button>
+  </div>
+  <button class="btn" onclick="goToday()">오늘</button>
+  <div class="view-toggle">
+    <button id="viewCal" class="active" onclick="setView('cal')">📅 캘린더</button>
+    <button id="viewList" onclick="setView('list')">📋 리스트</button>
+  </div>
+  <div class="spacer"></div>
+  <select class="filter-sel" id="labelFilter" onchange="render()"><option value="">전체 레이블</option></select>
+  <select class="filter-sel" id="artistFilter" onchange="render()"><option value="">전체 아티스트</option></select>
+  <div class="filters" id="statusFilters"></div>
+</div>
+
+<div class="stats" id="stats"></div>
+<div class="tbd-panel" id="tbdPanel" style="display:none"></div>
+
+<div class="cal-wrap" id="calWrap">
+  <div class="weekdays"><div class="sun">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div class="sat">토</div></div>
+  <div class="grid" id="grid"></div>
+</div>
+<div class="list-wrap" id="listWrap"></div>
+
+<div class="overlay" id="overlay">
+  <div class="detail" id="detailBox"></div>
+</div>
+
+<div class="footer-note">보기 전용 페이지입니다 · 일정 문의는 담당자에게 · 2026 음원 발매 일정</div>
+
+<script>
+const STATUS={plan:{label:'준비중',cls:'plan'},fix:{label:'확정',cls:'fix'},done:{label:'발매완료',cls:'done'},hold:{label:'보류',cls:'hold'}};
+const TODAY=new Date(2026,6,20);
+const HOLIDAYS={'2026-07-17':'제헌절','2026-08-15':'광복절','2026-08-17':'대체휴일','2026-09-25':'추석','2026-10-03':'개천절','2026-10-05':'대체휴일','2026-10-09':'한글날','2026-12-25':'성탄절'};
+
+/* ★ 데이터 (편집 불가·임베드) */
+const DATA=[
+  {date:'2026-07-06',time:'18:00',artist:'강태관',title:'사슬같은 사랑',label:'지니',status:'done'},
+  {date:'2026-07-07',time:'18:00',artist:'음유시인',title:'자꾸 그러면 널 좋아하게 될 것 같아',label:'우조엔터',status:'done'},
+  {date:'2026-07-13',time:'12:00',artist:'정립',title:'나를 보고 어찌 그리 눈을 반짝이는가',label:'우조엔터',status:'done'},
+  {date:'2026-07-13',time:'12:00',artist:'황루아',title:'루아는 특별하지 않아 멋있을뿐이지',label:'우조엔터',status:'done'},
+  {date:'2026-07-16',time:'12:00',artist:'DOKO(도코)',title:'친구',label:'플럭서스',status:'done',star:true},
+  {date:'2026-07-21',time:'18:00',artist:'권민',title:'Just Say Yes!',label:'지니',status:'fix'},
+  {date:'2026-07-22',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
+  {date:'2026-07-24',time:'18:00',artist:'정하경',title:'공룡만큼 사랑해',label:'지니',status:'fix'},
+  {date:'2026-07-25',time:'12:00',artist:'돌고래 합창단',title:'돌고래 친구들 이야기 #1',label:'지니',status:'fix'},
+  {date:'2026-07-27',time:'12:00',artist:'낭만보이',title:'내가 왜 네 아빠야',label:'지니',status:'fix'},
+  {date:'2026-07-28',time:'18:00',artist:'하비',title:'그대에게 난 뭐였나요',label:'지니',status:'fix'},
+  {date:'2026-07-29',time:'18:00',artist:'DOKO(도코)',title:'파란 밤 끝',label:'지니',status:'fix',star:true},
+  {date:'2026-07-31',time:'',artist:'정이한',title:'(곡명 미정)',label:'지니',status:'fix'},
+  {date:'2026-08-08',time:'12:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',star:true},
+  {date:'2026-08-19',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
+  {date:'2026-09-13',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
+  {date:'2026-09-24',time:'18:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',star:true},
+  {date:'2026-09-27',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출'},
+  {date:'2026-10-09',time:'18:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',star:true},
+  {date:'2026-10-17',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
+  {date:'2026-10-21',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출'},
+  {date:'2026-11-14',time:'18:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',star:true},
+  {date:'2026-11-16',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
+  {date:'2026-11-19',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출'},
+  {date:'2026-12-10',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
+  {date:'2026-12-18',time:'18:00',artist:'DOKO(도코)',title:'정규 10곡 (예정)',label:'CJ ENM',status:'plan',note:'노출',star:true},
+  {date:'2026-12-28',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출'},
+  {tbd:true,month:'2026-07',artist:'정석',title:'사랑하는 법을 몰라서',label:'지니',status:'hold'},
+  {tbd:true,month:'2026-07',artist:'김유안, 신재하',title:'More than words',label:'지니',status:'hold'},
+  {tbd:true,month:'2026-09',artist:'오연하',title:'나랑 같이 걸을래',label:'지니',status:'hold'},
+].map((e,i)=>({...e,id:'r'+i}));
+
+let curYear=2026,curMonth=6,view='cal',searchTerm='';
+let activeStatus={plan:true,fix:true,done:true,hold:true};
+
+function buildStatusFilters(){ const w=document.getElementById('statusFilters'); w.innerHTML='';
+  Object.entries(STATUS).forEach(([k,s])=>{ const c=document.createElement('button');
+    c.className='filter-chip '+(activeStatus[k]?'active':'off');
+    c.innerHTML=`<span class="dot" style="background:var(--s-${k})"></span>${s.label}`;
+    c.onclick=()=>{activeStatus[k]=!activeStatus[k];buildStatusFilters();render();}; w.appendChild(c); }); }
+function buildDropdowns(){
+  const a=document.getElementById('artistFilter');
+  a.innerHTML='<option value="">전체 아티스트</option>'+[...new Set(DATA.map(e=>e.artist))].sort().map(x=>`<option>${escapeHtml(x)}</option>`).join('');
+  const l=document.getElementById('labelFilter');
+  l.innerHTML='<option value="">전체 레이블</option>'+[...new Set(DATA.map(e=>e.label).filter(Boolean))].sort().map(x=>`<option>${escapeHtml(x)}</option>`).join('');
+}
+function pass(e){ if(!activeStatus[e.status]) return false;
+  const a=document.getElementById('artistFilter').value, l=document.getElementById('labelFilter').value;
+  if(a&&e.artist!==a) return false; if(l&&e.label!==l) return false;
+  if(searchTerm){ const t=(e.artist+' '+e.title+' '+(e.label||'')+' '+(e.note||'')).toLowerCase(); if(!t.includes(searchTerm)) return false; }
+  return true; }
+function dated(){ return DATA.filter(e=>!e.tbd&&pass(e)); }
+function tbd(){ return DATA.filter(e=>e.tbd&&pass(e)); }
+
+function render(){ document.getElementById('monthTitle').textContent=(curMonth+1)+'월'; stats(); renderTbd();
+  if(view==='cal') cal(); else list(); }
+function stats(){ const de=dated();
+  const me=de.filter(e=>{const d=new Date(e.date);return d.getFullYear()===curYear&&d.getMonth()===curMonth;});
+  const c={plan:0,fix:0,done:0,hold:0}; DATA.filter(pass).forEach(e=>c[e.status]++);
+  document.getElementById('stats').innerHTML=
+    `<div class="stat"><b>${me.length}</b>${curMonth+1}월 발매</div>`+
+    `<div class="stat"><b>${de.length}</b>연간 전체(확정일)</div>`+
+    `<div class="stat" style="color:var(--s-done)"><b>${c.done}</b>발매완료</div>`+
+    `<div class="stat" style="color:var(--s-fix)"><b>${c.fix}</b>확정</div>`+
+    `<div class="stat" style="color:var(--s-plan)"><b>${c.plan}</b>준비중</div>`+
+    `<div class="stat" style="color:var(--s-hold)"><b>${c.hold}</b>보류·미정</div>`; }
+function renderTbd(){ const p=document.getElementById('tbdPanel'), it=tbd();
+  if(!it.length){ p.style.display='none'; return; } p.style.display='block';
+  p.innerHTML=`<h4>📌 일정 미정 (${it.length}건)</h4><div class="tbd-list">`+
+    it.map(e=>`<div class="tbd-item" onclick="detail('${e.id}')"><b>${escapeHtml(e.artist)}</b> <span>· ${escapeHtml(e.title)}</span><span style="color:var(--text-mute)"> · ${escapeHtml(e.label||'')} · ${(e.month||'').replace('2026-','')}월</span></div>`).join('')+`</div>`; }
+function tb(t){ return t?`<span class="ev-time">${t}</span>`:''; }
+
+function cal(){ document.getElementById('calWrap').style.display='block'; document.getElementById('listWrap').style.display='none';
+  const g=document.getElementById('grid'); g.innerHTML='';
+  const startDay=new Date(curYear,curMonth,1).getDay();
+  const dim=new Date(curYear,curMonth+1,0).getDate(), pdim=new Date(curYear,curMonth,0).getDate();
+  const by={}; dated().forEach(e=>{(by[e.date]=by[e.date]||[]).push(e);});
+  Object.values(by).forEach(a=>a.sort((x,y)=>(x.time||'99').localeCompare(y.time||'99')));
+  const cells=[];
+  for(let i=startDay-1;i>=0;i--) cells.push({day:pdim-i,other:true});
+  for(let d=1;d<=dim;d++) cells.push({day:d,other:false});
+  while(cells.length<42) cells.push({day:cells.length-startDay-dim+1,other:true});
+  cells.forEach((c,idx)=>{ const div=document.createElement('div'); const dow=idx%7;
+    const ds=`${curYear}-${String(curMonth+1).padStart(2,'0')}-${String(c.day).padStart(2,'0')}`;
+    const holi=!c.other?HOLIDAYS[ds]:null;
+    div.className='cell'+(c.other?' other':'')+(dow===0?' sun':'')+(dow===6?' sat':'')+(holi?' holiday':'');
+    if(!c.other&&TODAY.getFullYear()===curYear&&TODAY.getMonth()===curMonth&&TODAY.getDate()===c.day) div.classList.add('today');
+    let h=`<div class="num"><span>${c.day}</span>${holi?`<span class="holi">${holi}</span>`:''}</div>`;
+    if(!c.other&&by[ds]) by[ds].forEach(e=>{ h+=`<div class="event ${STATUS[e.status].cls}" onclick="detail('${e.id}')">
+      <div class="ev-top">${tb(e.time)}<span class="ev-artist">${e.star?'<span class="star">★</span>':''}${escapeHtml(e.artist)}</span></div>
+      <div class="ev-title">${escapeHtml(e.title)}${e.note?` · ${escapeHtml(e.note)}`:''}</div>
+      <div class="ev-meta"><span class="stag">●</span>${escapeHtml(e.label||'-')} · ${STATUS[e.status].label}</div></div>`; });
+    div.innerHTML=h; g.appendChild(div); }); }
+
+function list(){ document.getElementById('calWrap').style.display='none'; document.getElementById('listWrap').style.display='block';
+  const w=document.getElementById('listWrap');
+  const d=dated().slice().sort((a,b)=>a.date===b.date?(a.time||'').localeCompare(b.time||''):a.date.localeCompare(b.date));
+  const t=tbd(); if(!d.length&&!t.length){ w.innerHTML='<div class="empty">표시할 일정이 없습니다.</div>'; return; }
+  const bm={}; d.forEach(e=>{const m=e.date.slice(0,7);(bm[m]=bm[m]||[]).push(e);}); t.forEach(e=>{(bm[e.month]=bm[e.month]||[]).push(e);});
+  let html=''; Object.keys(bm).sort().forEach(m=>{ const mo=parseInt(m.split('-')[1]), rows=bm[m];
+    html+=`<div class="list-month"><h3>${m.split('-')[0]}년 ${mo}월 · ${rows.length}건</h3>
+      <table><thead><tr><th style="width:100px">발매일</th><th style="width:66px">시간</th><th>아티스트</th><th>곡 / 앨범</th><th style="width:90px">담당</th><th style="width:100px">상태</th></tr></thead><tbody>`;
+    rows.forEach(e=>{ let dc; if(e.tbd) dc='<span style="color:var(--s-hold)">미정</span>';
+      else{ const dd=new Date(e.date), dow=['일','월','화','수','목','금','토'][dd.getDay()]; dc=`${mo}/${parseInt(e.date.slice(8))} <span style="color:var(--text-mute)">(${dow})</span>`; }
+      html+=`<tr class="row" onclick="detail('${e.id}')"><td>${dc}</td><td style="color:var(--text-dim)">${e.time||'-'}</td>
+        <td style="font-weight:700">${e.star?'<span style="color:var(--star)">★</span> ':''}${escapeHtml(e.artist)}</td>
+        <td style="color:var(--text-dim)">${escapeHtml(e.title)}${e.note?` <span class="tag-note ${e.note==='노출'?'note-open':'note-closed'}">${escapeHtml(e.note)}</span>`:''}</td>
+        <td><span class="tag-label">${escapeHtml(e.label||'-')}</span></td>
+        <td><span class="pill ${STATUS[e.status].cls}"><span class="dot"></span>${STATUS[e.status].label}</span></td></tr>`; });
+    html+='</tbody></table></div>'; });
+  w.innerHTML=html; }
+
+function detail(id){ const e=DATA.find(x=>x.id===id); if(!e) return;
+  let dline; if(e.tbd) dline='일정 미정 ('+(e.month||'').replace('2026-','')+'월)';
+  else{ const d=new Date(e.date), dow=['일','월','화','수','목','금','토'][d.getDay()]; dline=`${e.date} (${dow})`; }
+  document.getElementById('detailBox').innerHTML=`
+    <div class="d-head"><div><div class="d-artist">${e.star?'<span style="color:var(--star)">★</span> ':''}${escapeHtml(e.artist)}</div>
+      <div class="d-title">${escapeHtml(e.title)}</div></div></div>
+    <div class="d-row"><span class="k">발매일</span><span class="v">${dline}</span></div>
+    <div class="d-row"><span class="k">시간</span><span class="v">${e.time?e.time+(e.time==='12:00'?' (정오)':''):'미정'}</span></div>
+    <div class="d-row"><span class="k">담당/레이블</span><span class="v">${escapeHtml(e.label||'-')}</span></div>
+    ${e.note?`<div class="d-row"><span class="k">공개 여부</span><span class="v">${escapeHtml(e.note)}</span></div>`:''}
+    <div class="d-row"><span class="k">진행 상태</span><span class="v"><span class="pill ${STATUS[e.status].cls}"><span class="dot"></span>${STATUS[e.status].label}</span></span></div>
+    <button class="btn d-close" onclick="closeDetail()">닫기</button>`;
+  document.getElementById('overlay').classList.add('open'); }
+function closeDetail(){ document.getElementById('overlay').classList.remove('open'); }
+
+function changeMonth(dir){ curMonth+=dir; if(curMonth<0){curMonth=11;curYear--;} if(curMonth>11){curMonth=0;curYear++;} render(); }
+function goToday(){ curYear=2026; curMonth=6; render(); }
+function setView(v){ view=v; document.getElementById('viewCal').classList.toggle('active',v==='cal'); document.getElementById('viewList').classList.toggle('active',v==='list'); render(); }
+function escapeHtml(s){ return (s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+document.getElementById('searchInput').addEventListener('input',e=>{ searchTerm=e.target.value.toLowerCase().trim(); render(); });
+document.getElementById('overlay').addEventListener('click',e=>{ if(e.target.id==='overlay') closeDetail(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDetail(); });
+buildStatusFilters(); buildDropdowns(); render();
+</script>
+</body>
+</html>
