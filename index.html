@@ -185,8 +185,8 @@ const STATUS={plan:{label:'준비중',cls:'plan'},fix:{label:'확정',cls:'fix'}
 const TODAY=new Date(2026,6,20);
 const HOLIDAYS={'2026-07-17':'제헌절','2026-08-15':'광복절','2026-08-17':'대체휴일','2026-09-25':'추석','2026-10-03':'개천절','2026-10-05':'대체휴일','2026-10-09':'한글날','2026-12-25':'성탄절'};
 
-/* ★ 데이터 (편집 불가·임베드) */
-const DATA=[
+/* ★ 데이터 (기본값 — 서버의 data.json이 있으면 그것으로 자동 교체됨) */
+let DATA=[
   {date:'2026-07-06',time:'18:00',artist:'강태관',title:'사슬같은 사랑',label:'지니',status:'done'},
   {date:'2026-07-07',time:'18:00',artist:'음유시인',title:'자꾸 그러면 널 좋아하게 될 것 같아',label:'우조엔터',status:'done'},
   {date:'2026-07-13',time:'12:00',artist:'정립',title:'나를 보고 어찌 그리 눈을 반짝이는가',label:'우조엔터',status:'done'},
@@ -214,8 +214,17 @@ const DATA=[
   {date:'2026-12-10',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
   {date:'2026-12-18',time:'18:00',artist:'DOKO(도코)',title:'정규 10곡 (예정)',label:'CJ ENM',status:'plan',note:'노출',star:true},
   {date:'2026-12-28',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출'},
-  {tbd:true,month:'2026-07',artist:'정석',title:'사랑하는 법을 몰라서',label:'지니',status:'hold'},
-  {tbd:true,month:'2026-07',artist:'김유안, 신재하',title:'More than words',label:'지니',status:'hold'},
+  /* ── 8월 발매 희망 라인업 (일정 미정 · 총 10건/11곡) ── */
+  {tbd:true,month:'2026-08',artist:'류민희',title:'나보다 꼭 행복해야해',status:'hold',wish:'8월 중 (시기 미지정)',memo:'녹음 완료'},
+  {tbd:true,month:'2026-08',artist:'정하경',title:'너 진짜 너무해',status:'hold',wish:'8월 초',memo:'자료 7/23 완료'},
+  {tbd:true,month:'2026-08',artist:'낭만보이',title:'숨이차도 널 놓지 못해',status:'hold',wish:'8월 중 아무 때나',memo:'자료 7/23 준비 완료'},
+  {tbd:true,month:'2026-08',artist:'도코',title:'너는 알텐데',status:'hold',star:true,wish:'8/12 ~ 8/17',memo:'자료 7/23 완료 · 8/8 발매건과 3일 이상 간격 필요'},
+  {tbd:true,month:'2026-08',artist:'도코',title:'운명',status:'hold',star:true,wish:'8월 마지막 주',memo:'자료 7월 말일자 완료'},
+  {tbd:true,month:'2026-08',artist:'정석',title:'사랑하는 법을 몰라서',label:'지니',status:'hold',wish:'8월 첫째 주',memo:'준비 완료'},
+  {tbd:true,month:'2026-08',artist:'김유안, 신재하',title:'More than words (리메이크)',label:'지니',status:'hold',wish:'8월 첫째~둘째 주',memo:'듀엣 + 솔로 2곡 구성 · 자료 7/23 완료'},
+  {tbd:true,month:'2026-08',artist:'김초록',title:'천천히 천천히',status:'hold',wish:'8월 중순 이후',memo:'🆕 신규 아티스트 등록 필요 · 신예 인디 보컬 첫 데뷔곡'},
+  {tbd:true,month:'2026-08',artist:'Min',title:'하루 종일 너 생각만',status:'hold',wish:'8월 중순 이후',memo:'자료 7월 말일자 완료'},
+  {tbd:true,month:'2026-08',artist:'영리치',title:'라운지 새벽',status:'hold',wish:'8/16 이후',memo:'🆕 신규 아티스트 등록 필요 · 도코 목소리 부캐 첫 데뷔곡'},
   {tbd:true,month:'2026-09',artist:'오연하',title:'나랑 같이 걸을래',label:'지니',status:'hold'},
 ].map((e,i)=>({...e,id:'r'+i}));
 
@@ -263,8 +272,8 @@ function stats(){ const de=dated();
     `<div class="stat" style="color:var(--s-hold)"><b>${c.hold}</b>보류·미정</div>`; }
 function renderTbd(){ const p=document.getElementById('tbdPanel'), it=tbd();
   if(!it.length){ p.style.display='none'; return; } p.style.display='block';
-  p.innerHTML=`<h4>📌 일정 미정 (${it.length}건)</h4><div class="tbd-list">`+
-    it.map(e=>`<div class="tbd-item" onclick="detail('${e.id}')"><b>${escapeHtml(e.artist)}</b> <span>· ${escapeHtml(e.title)}</span><span style="color:var(--text-mute)"> · ${escapeHtml(e.label||'')} · ${(e.month||'').replace('2026-','')}월</span></div>`).join('')+`</div>`; }
+  p.innerHTML=`<h4>📌 일정 미정 · 발매 희망 (${it.length}건)</h4><div class="tbd-list">`+
+    it.map(e=>`<div class="tbd-item" onclick="detail('${e.id}')"><b>${e.star?'★ ':''}${escapeHtml(e.artist)}</b> <span>· ${escapeHtml(e.title)}</span><span style="color:var(--text-mute)"> · ${parseInt((e.month||'').slice(5))}월${e.wish?` · 희망 ${escapeHtml(e.wish)}`:''}${e.memo&&e.memo.includes('🆕')?' · 🆕신규등록':''}</span></div>`).join('')+`</div>`; }
 function tb(t){ return t?`<span class="ev-time">${t}</span>`:''; }
 
 function cal(){ document.getElementById('calWrap').style.display='block'; document.getElementById('listWrap').style.display='none';
@@ -308,15 +317,17 @@ function list(){ document.getElementById('calWrap').style.display='none'; docume
   w.innerHTML=html; }
 
 function detail(id){ const e=DATA.find(x=>x.id===id); if(!e) return;
-  let dline; if(e.tbd) dline='일정 미정 ('+(e.month||'').replace('2026-','')+'월)';
+  let dline; if(e.tbd) dline='일정 미정 ('+parseInt((e.month||'0000-00').slice(5))+'월 희망)';
   else{ const d=new Date(e.date), dow=['일','월','화','수','목','금','토'][d.getDay()]; dline=`${e.date} (${dow})`; }
   document.getElementById('detailBox').innerHTML=`
     <div class="d-head"><div><div class="d-artist">${e.star?'<span style="color:var(--star)">★</span> ':''}${escapeHtml(e.artist)}</div>
       <div class="d-title">${escapeHtml(e.title)}</div></div></div>
     <div class="d-row"><span class="k">발매일</span><span class="v">${dline}</span></div>
+    ${e.wish?`<div class="d-row"><span class="k">희망 시기</span><span class="v">${escapeHtml(e.wish)}</span></div>`:''}
     <div class="d-row"><span class="k">시간</span><span class="v">${e.time?e.time+(e.time==='12:00'?' (정오)':''):'미정'}</span></div>
     <div class="d-row"><span class="k">담당/레이블</span><span class="v">${escapeHtml(e.label||'-')}</span></div>
     ${e.note?`<div class="d-row"><span class="k">공개 여부</span><span class="v">${escapeHtml(e.note)}</span></div>`:''}
+    ${e.memo?`<div class="d-row"><span class="k">비고</span><span class="v">${escapeHtml(e.memo)}</span></div>`:''}
     <div class="d-row"><span class="k">진행 상태</span><span class="v"><span class="pill ${STATUS[e.status].cls}"><span class="dot"></span>${STATUS[e.status].label}</span></span></div>
     <button class="btn d-close" onclick="closeDetail()">닫기</button>`;
   document.getElementById('overlay').classList.add('open'); }
@@ -330,6 +341,20 @@ document.getElementById('searchInput').addEventListener('input',e=>{ searchTerm=
 document.getElementById('overlay').addEventListener('click',e=>{ if(e.target.id==='overlay') closeDetail(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDetail(); });
 buildStatusFilters(); buildDropdowns(); render();
+
+/* ── 최신 데이터 자동 로드 (data.json이 갱신되면 페이지도 자동 반영) ── */
+(async function loadRemote(){
+  try{
+    const r=await fetch('data.json?ts='+Date.now(),{cache:'no-store'});
+    if(r.ok){
+      const d=await r.json();
+      if(Array.isArray(d)&&d.length){
+        DATA=d.map((e,i)=>({...e,id:'r'+i}));
+        buildDropdowns(); render();
+      }
+    }
+  }catch(e){ /* 로컬 파일로 열었거나 네트워크 오류 → 내장 데이터 사용 */ }
+})();
 </script>
 </body>
 </html>
