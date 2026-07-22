@@ -5,7 +5,8 @@
   "artist": "강태관",
   "title": "사슬같은 사랑",
   "label": "지니",
-  "status": "done"
+  "status": "done",
+  "stage": 6
  },
  {
   "date": "2026-07-07",
@@ -13,7 +14,8 @@
   "artist": "음유시인",
   "title": "자꾸 그러면 널 좋아하게 될 것 같아",
   "label": "우조엔터",
-  "status": "done"
+  "status": "done",
+  "stage": 6
  },
  {
   "date": "2026-07-13",
@@ -21,7 +23,8 @@
   "artist": "정립",
   "title": "나를 보고 어찌 그리 눈을 반짝이는가",
   "label": "우조엔터",
-  "status": "done"
+  "status": "done",
+  "stage": 6
  },
  {
   "date": "2026-07-13",
@@ -29,7 +32,8 @@
   "artist": "황루아",
   "title": "루아는 특별하지 않아 멋있을뿐이지",
   "label": "우조엔터",
-  "status": "done"
+  "status": "done",
+  "stage": 6
  },
  {
   "date": "2026-07-16",
@@ -38,6 +42,7 @@
   "title": "친구",
   "label": "플럭서스",
   "status": "done",
+  "stage": 6,
   "star": true
  },
  {
@@ -46,7 +51,8 @@
   "artist": "권민",
   "title": "Just Say Yes!",
   "label": "지니",
-  "status": "fix"
+  "status": "fix",
+  "stage": 5
  },
  {
   "date": "2026-07-22",
@@ -55,7 +61,8 @@
   "title": "정규 10곡",
   "label": "CJ ENM",
   "status": "fix",
-  "note": "미노출"
+  "note": "미노출",
+  "stage": 5
  },
  {
   "date": "2026-07-24",
@@ -63,7 +70,8 @@
   "artist": "정하경",
   "title": "공룡만큼 사랑해",
   "label": "지니",
-  "status": "fix"
+  "status": "fix",
+  "stage": 5
  },
  {
   "date": "2026-07-25",
@@ -71,7 +79,8 @@
   "artist": "돌고래 합창단",
   "title": "돌고래 친구들 이야기 #1",
   "label": "지니",
-  "status": "fix"
+  "status": "fix",
+  "stage": 5
  },
  {
   "date": "2026-07-27",
@@ -79,7 +88,8 @@
   "artist": "낭만보이",
   "title": "내가 왜 네 아빠야",
   "label": "지니",
-  "status": "fix"
+  "status": "fix",
+  "stage": 5
  },
  {
   "date": "2026-07-28",
@@ -87,7 +97,8 @@
   "artist": "하비",
   "title": "그대에게 난 뭐였나요",
   "label": "지니",
-  "status": "fix"
+  "status": "fix",
+  "stage": 5
  },
  {
   "date": "2026-07-29",
@@ -96,6 +107,7 @@
   "title": "파란 밤 끝",
   "label": "지니",
   "status": "fix",
+  "stage": 5,
   "star": true
  },
  {
@@ -104,7 +116,8 @@
   "artist": "정이한",
   "title": "(곡명 미정)",
   "label": "지니",
-  "status": "fix"
+  "status": "fix",
+  "stage": 4
  },
  {
   "date": "2026-08-08",
@@ -114,6 +127,7 @@
   "label": "CJ ENM",
   "status": "fix",
   "note": "노출",
+  "stage": 4,
   "star": true
  },
  {
@@ -123,7 +137,8 @@
   "title": "정규 10곡",
   "label": "CJ ENM",
   "status": "fix",
-  "note": "미노출"
+  "note": "미노출",
+  "stage": 4
  },
  {
   "date": "2026-09-13",
@@ -132,7 +147,8 @@
   "title": "정규 10곡",
   "label": "CJ ENM",
   "status": "fix",
-  "note": "미노출"
+  "note": "미노출",
+  "stage": 3
  },
  {
   "date": "2026-09-24",
@@ -142,6 +158,7 @@
   "label": "CJ ENM",
   "status": "fix",
   "note": "노출",
+  "stage": 3,
   "star": true
  },
  {
@@ -151,7 +168,8 @@
   "title": "미니 5곡",
   "label": "CJ ENM",
   "status": "fix",
-  "note": "노출"
+  "note": "노출",
+  "stage": 3
  },
  {
   "date": "2026-10-09",
@@ -161,6 +179,7 @@
   "label": "CJ ENM",
   "status": "fix",
   "note": "노출",
+  "stage": 2,
   "star": true
  },
  {
@@ -170,7 +189,8 @@
   "title": "정규 10곡",
   "label": "CJ ENM",
   "status": "fix",
-  "note": "미노출"
+  "note": "미노출",
+  "stage": 2
  },
  {
   "date": "2026-10-21",
@@ -179,7 +199,8 @@
   "title": "미니 5곡",
   "label": "CJ ENM",
   "status": "fix",
-  "note": "노출"
+  "note": "노출",
+  "stage": 2
  },
  {
   "date": "2026-11-14",
@@ -189,6 +210,7 @@
   "label": "CJ ENM",
   "status": "fix",
   "note": "노출",
+  "stage": 1,
   "star": true
  },
  {
@@ -198,7 +220,8 @@
   "title": "정규 10곡",
   "label": "CJ ENM",
   "status": "fix",
-  "note": "미노출"
+  "note": "미노출",
+  "stage": 1
  },
  {
   "date": "2026-11-19",
@@ -207,7 +230,8 @@
   "title": "미니 5곡",
   "label": "CJ ENM",
   "status": "fix",
-  "note": "노출"
+  "note": "노출",
+  "stage": 1
  },
  {
   "date": "2026-12-10",
@@ -216,7 +240,8 @@
   "title": "정규 10곡",
   "label": "CJ ENM",
   "status": "fix",
-  "note": "미노출"
+  "note": "미노출",
+  "stage": 1
  },
  {
   "date": "2026-12-18",
@@ -226,6 +251,7 @@
   "label": "CJ ENM",
   "status": "plan",
   "note": "노출",
+  "stage": 1,
   "star": true
  },
  {
@@ -235,7 +261,8 @@
   "title": "미니 5곡",
   "label": "CJ ENM",
   "status": "fix",
-  "note": "노출"
+  "note": "노출",
+  "stage": 1
  },
  {
   "tbd": true,
@@ -243,6 +270,7 @@
   "artist": "류민희",
   "title": "나보다 꼭 행복해야해",
   "status": "hold",
+  "stage": 2,
   "wish": "8월 중 (시기 미지정)",
   "memo": "녹음 완료"
  },
@@ -252,6 +280,7 @@
   "artist": "정하경",
   "title": "너 진짜 너무해",
   "status": "hold",
+  "stage": 4,
   "wish": "8월 초",
   "memo": "자료 7/23 완료"
  },
@@ -261,6 +290,7 @@
   "artist": "낭만보이",
   "title": "숨이차도 널 놓지 못해",
   "status": "hold",
+  "stage": 4,
   "wish": "8월 중 아무 때나",
   "memo": "자료 7/23 준비 완료"
  },
@@ -270,6 +300,7 @@
   "artist": "도코",
   "title": "너는 알텐데",
   "status": "hold",
+  "stage": 4,
   "star": true,
   "wish": "8/12 ~ 8/17",
   "memo": "자료 7/23 완료 · 8/8 발매건과 3일 이상 간격 필요"
@@ -280,6 +311,7 @@
   "artist": "도코",
   "title": "운명",
   "status": "hold",
+  "stage": 4,
   "star": true,
   "wish": "8월 마지막 주",
   "memo": "자료 7월 말일자 완료"
@@ -291,6 +323,7 @@
   "title": "사랑하는 법을 몰라서",
   "label": "지니",
   "status": "hold",
+  "stage": 4,
   "wish": "8월 첫째 주",
   "memo": "준비 완료"
  },
@@ -301,6 +334,7 @@
   "title": "More than words (리메이크)",
   "label": "지니",
   "status": "hold",
+  "stage": 4,
   "wish": "8월 첫째~둘째 주",
   "memo": "듀엣 + 솔로 2곡 구성 · 자료 7/23 완료"
  },
@@ -310,6 +344,7 @@
   "artist": "김초록",
   "title": "천천히 천천히",
   "status": "hold",
+  "stage": 2,
   "wish": "8월 중순 이후",
   "memo": "🆕 신규 아티스트 등록 필요 · 신예 인디 보컬 첫 데뷔곡"
  },
@@ -319,6 +354,7 @@
   "artist": "Min",
   "title": "하루 종일 너 생각만",
   "status": "hold",
+  "stage": 4,
   "wish": "8월 중순 이후",
   "memo": "자료 7월 말일자 완료"
  },
@@ -328,6 +364,7 @@
   "artist": "영리치",
   "title": "라운지 새벽",
   "status": "hold",
+  "stage": 4,
   "wish": "8/16 이후",
   "memo": "🆕 신규 아티스트 등록 필요 · 도코 목소리 부캐 첫 데뷔곡"
  },
@@ -337,6 +374,7 @@
   "artist": "오연하",
   "title": "나랑 같이 걸을래",
   "label": "지니",
-  "status": "hold"
+  "status": "hold",
+  "stage": 1
  }
 ]

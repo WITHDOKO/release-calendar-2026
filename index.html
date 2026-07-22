@@ -3,104 +3,156 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 음원 발매 일정</title>
+<title>2026 음원 발매 운영</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
   :root{
-    --bg:#0f1117; --panel:#171a23; --panel-2:#1e222e; --line:#2a2f3d;
-    --text:#e8eaf0; --text-dim:#9aa1b3; --text-mute:#6b7280;
-    --accent:#6c8cff; --accent-soft:rgba(108,140,255,.15);
-    --s-plan:#f5a623;--s-plan-bg:rgba(245,166,35,.16);
-    --s-fix:#3ea6ff;--s-fix-bg:rgba(62,166,255,.16);
-    --s-done:#2ecc71;--s-done-bg:rgba(46,204,113,.16);
-    --s-hold:#8b93a7;--s-hold-bg:rgba(139,147,167,.16);
-    --star:#ffcf3f; --radius:14px; --shadow:0 8px 30px rgba(0,0,0,.35);
+    --bg:#0b0f0a; --panel:#121711; --panel-2:#1a211a; --line:#242e23; --line-2:#2f3b2e;
+    --text:#e9efe6; --text-dim:#96a292; --text-mute:#5f6b5c;
+    --lime:#b8f04a; --lime-dim:rgba(184,240,74,.14); --lime-text:#0c110c;
+    --s-plan:#f0b429; --s-plan-bg:rgba(240,180,41,.15);
+    --s-fix:#7f9cf5;  --s-fix-bg:rgba(127,156,245,.15);
+    --s-done:#4ade80; --s-done-bg:rgba(74,222,128,.15);
+    --s-hold:#8b95a7; --s-hold-bg:rgba(139,149,167,.15);
+    --star:#ffd84d;
     --font:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
   html,body{ background:var(--bg); color:var(--text); font-family:var(--font); }
-  body{ padding:0 0 40px; }
+  body{ padding-bottom:50px; }
   button{ font-family:inherit; cursor:pointer; }
-  .topbar{ position:sticky; top:0; z-index:40; background:rgba(15,17,23,.85); backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--line); padding:14px 22px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-  .brand{ display:flex; align-items:center; gap:12px; }
-  .brand .logo{ width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,#6c8cff,#a86cff);
-    display:grid; place-items:center; font-size:20px; box-shadow:0 4px 14px rgba(108,140,255,.4); }
-  .brand h1{ font-size:17px; font-weight:800; letter-spacing:-.3px; }
-  .brand p{ font-size:12px; color:var(--text-dim); margin-top:1px; }
-  .readonly-badge{ font-size:11px; font-weight:700; color:var(--s-fix); background:var(--s-fix-bg); padding:4px 10px; border-radius:20px; }
+  select,input{ font-family:inherit; }
+
+  /* ── 상단바 ── */
+  .topbar{ position:sticky; top:0; z-index:50; background:rgba(11,15,10,.88); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line); padding:12px 24px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .logo{ width:38px; height:38px; border-radius:10px; background:var(--lime); color:var(--lime-text);
+    display:grid; place-items:center; font-weight:900; font-size:18px; }
+  .brand h1{ font-size:16px; font-weight:800; letter-spacing:-.2px; }
+  .brand p{ font-size:10px; color:var(--text-mute); letter-spacing:2.2px; margin-top:2px; }
+  .sync-pill{ font-size:11px; color:var(--text-dim); background:var(--panel-2); border:1px solid var(--line);
+    border-radius:20px; padding:5px 12px; display:inline-flex; align-items:center; gap:6px; }
+  .sync-pill .dot{ width:7px; height:7px; border-radius:50%; background:var(--s-done); }
   .spacer{ flex:1; }
-  .search{ position:relative; }
-  .search input{ background:var(--panel-2); border:1px solid var(--line); color:var(--text); border-radius:10px;
-    padding:9px 12px 9px 34px; font-size:13px; width:200px; outline:none; }
-  .search input:focus{ border-color:var(--accent); }
-  .search svg{ position:absolute; left:11px; top:50%; transform:translateY(-50%); opacity:.5; }
-  .btn{ background:var(--panel-2); border:1px solid var(--line); color:var(--text); padding:9px 13px; border-radius:10px;
-    font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:7px; transition:.15s; white-space:nowrap; }
-  .btn:hover{ border-color:var(--accent); background:var(--accent-soft); }
-  .controls{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:16px 22px 6px; }
-  .month-nav{ display:flex; align-items:center; gap:6px; }
-  .month-nav button{ width:34px; height:34px; border-radius:9px; background:var(--panel-2); border:1px solid var(--line);
-    color:var(--text); font-size:16px; display:grid; place-items:center; }
-  .month-nav button:hover{ border-color:var(--accent); }
-  .month-title{ font-size:22px; font-weight:800; min-width:150px; text-align:center; letter-spacing:-.5px; }
-  .view-toggle{ display:flex; background:var(--panel-2); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
-  .view-toggle button{ background:transparent; border:none; color:var(--text-dim); padding:8px 14px; font-size:13px; font-weight:600; }
-  .view-toggle button.active{ background:var(--accent); color:#fff; }
-  .month-tabs{ display:flex; gap:6px; flex-wrap:wrap; padding:12px 22px 0; }
-  .month-tab{ background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim); border-radius:9px;
-    padding:7px 12px; font-size:13px; font-weight:700; position:relative; transition:.12s; }
-  .month-tab:hover{ border-color:var(--accent); color:var(--text); }
-  .month-tab.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
-  .month-tab .cnt{ margin-left:5px; font-size:10px; opacity:.85; font-weight:700; }
+  .btn{ background:var(--panel-2); border:1px solid var(--line-2); color:var(--text); padding:9px 14px;
+    border-radius:10px; font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:6px; transition:.15s; white-space:nowrap; }
+  .btn:hover{ border-color:var(--lime); }
+  .btn.lime{ background:var(--lime); border-color:var(--lime); color:var(--lime-text); font-weight:800; }
+  .btn.lime:hover{ filter:brightness(1.06); }
+
+  /* ── 히어로 (연간 현황) ── */
+  .hero{ display:grid; grid-template-columns:1.3fr 1fr 1.4fr .9fr; gap:0; border-bottom:1px solid var(--line); }
+  .hero>div{ padding:20px 24px; border-right:1px solid var(--line); }
+  .hero>div:last-child{ border-right:none; }
+  .hero .k{ font-size:11px; color:var(--lime); font-weight:700; margin-bottom:7px; letter-spacing:.3px; }
+  .hero .today-line{ font-size:12px; color:var(--text-dim); margin-bottom:6px; }
+  .hero h2{ font-size:21px; font-weight:800; letter-spacing:-.4px; }
+  .next-date{ font-size:17px; font-weight:800; }
+  .next-sub{ font-size:12px; color:var(--text-dim); margin-top:4px; }
+  .goal-top{ display:flex; align-items:baseline; gap:10px; }
+  .goal-top b{ font-size:19px; }
+  .goal-top .pct{ font-size:12px; color:var(--lime); font-weight:700; }
+  .goal-bar{ height:7px; background:var(--panel-2); border-radius:6px; margin:9px 0 10px; overflow:hidden; }
+  .goal-bar i{ display:block; height:100%; background:var(--lime); border-radius:6px; transition:.3s; }
+  .goal-dots{ display:flex; gap:12px; flex-wrap:wrap; font-size:11px; color:var(--text-dim); }
+  .goal-dots b{ color:var(--text); }
+  .goal-dots .dt{ width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:4px; }
+  .toggle-wrap{ display:flex; flex-direction:column; gap:8px; align-items:flex-start; }
+  .toggle-label{ font-size:13px; font-weight:700; }
+  .toggle-sub{ font-size:11px; color:var(--text-mute); }
+  .switch{ width:44px; height:24px; border-radius:20px; background:var(--panel-2); border:1px solid var(--line-2);
+    position:relative; transition:.2s; }
+  .switch.on{ background:var(--lime); border-color:var(--lime); }
+  .switch i{ position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:#fff; transition:.2s; }
+  .switch.on i{ left:22px; }
+
+  /* ── 필터 줄 ── */
+  .filters-row{ display:flex; align-items:center; gap:12px; padding:14px 24px; flex-wrap:wrap; }
+  .search{ position:relative; flex:1; min-width:220px; max-width:420px; }
+  .search input{ width:100%; background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+    border-radius:10px; padding:10px 12px 10px 36px; font-size:13px; outline:none; }
+  .search input:focus{ border-color:var(--lime); }
+  .search svg{ position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.45; }
+  select.sel{ background:var(--panel-2); border:1px solid var(--line); color:var(--text); border-radius:10px;
+    padding:9px 12px; font-size:13px; outline:none; }
+  .count-note{ font-size:12px; color:var(--text-mute); margin-left:auto; }
+
+  /* ── 뷰 탭 + 월 탭 ── */
+  .viewtabs{ display:flex; align-items:center; gap:22px; padding:0 24px; border-bottom:1px solid var(--line); }
+  .viewtab{ background:none; border:none; color:var(--text-dim); font-size:14px; font-weight:700; padding:12px 2px;
+    border-bottom:2px solid transparent; }
+  .viewtab.active{ color:var(--text); border-bottom-color:var(--lime); }
+  .yearnav{ margin-left:auto; display:flex; align-items:center; gap:14px; font-size:14px; font-weight:700; color:var(--text-dim); }
+  .yearnav button{ background:none; border:none; color:var(--text-dim); font-size:17px; }
+  .yearnav button:hover{ color:var(--lime); }
+  .month-tabs{ display:flex; gap:6px; flex-wrap:wrap; padding:12px 24px 2px; }
+  .month-tab{ background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim); border-radius:20px;
+    padding:7px 13px; font-size:12px; font-weight:700; transition:.12s; }
+  .month-tab:hover{ border-color:var(--lime); color:var(--text); }
+  .month-tab.active{ background:var(--lime); border-color:var(--lime); color:var(--lime-text); }
   .month-tab.empty{ opacity:.45; }
-  .filters{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-  .filter-chip{ background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim); padding:6px 12px;
-    border-radius:20px; font-size:12px; font-weight:600; display:inline-flex; align-items:center; gap:6px; }
-  .filter-chip .dot{ width:9px; height:9px; border-radius:50%; }
-  .filter-chip.active{ color:var(--text); border-color:currentColor; }
-  .filter-chip.off{ opacity:.4; text-decoration:line-through; }
-  select.filter-sel{ background:var(--panel-2); border:1px solid var(--line); color:var(--text); border-radius:10px;
-    padding:8px 12px; font-size:13px; outline:none; }
-  .stats{ display:flex; gap:10px; flex-wrap:wrap; padding:8px 22px 0; }
-  .stat{ background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:8px 14px; font-size:12px; color:var(--text-dim); }
-  .stat b{ color:var(--text); font-size:16px; margin-right:5px; }
-  .tbd-panel{ margin:12px 22px 0; background:var(--panel); border:1px dashed var(--line); border-radius:12px; padding:12px 16px; }
-  .tbd-panel h4{ font-size:12px; color:var(--s-hold); margin-bottom:8px; font-weight:800; letter-spacing:.3px; }
+
+  /* ── 업무 진행 (다가오는 5건) ── */
+  .flow-head{ display:flex; align-items:baseline; gap:10px; padding:16px 24px 10px; }
+  .flow-head .eyebrow{ font-size:10px; letter-spacing:2px; color:var(--lime); font-weight:800; }
+  .flow-head h3{ font-size:15px; font-weight:800; }
+  .flow-head .note{ margin-left:auto; font-size:11px; color:var(--text-mute); }
+  .flow-strip{ display:grid; grid-template-columns:repeat(5,1fr); gap:10px; padding:0 24px 6px; }
+  .flow-card{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px 13px; cursor:pointer; transition:.12s; }
+  .flow-card:hover{ border-color:var(--line-2); transform:translateY(-1px); }
+  .flow-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+  .flow-date{ font-size:12px; font-weight:800; color:var(--lime); }
+  .flow-stage{ background:var(--panel-2); border:1px solid var(--line-2); color:var(--text); font-size:11px;
+    border-radius:7px; padding:4px 6px; outline:none; }
+  .flow-title{ font-size:13px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .flow-sub{ font-size:11px; color:var(--text-dim); margin:3px 0 9px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .seg-row{ display:flex; align-items:center; gap:4px; }
+  .seg{ flex:1; height:5px; border-radius:4px; background:var(--panel-2); }
+  .seg.on{ background:var(--s-done); }
+  .seg-num{ font-size:10px; color:var(--text-mute); margin-left:4px; }
+  .flow-empty{ grid-column:1/-1; text-align:center; color:var(--text-mute); font-size:13px; padding:18px; }
+
+  /* ── 일정 미정 ── */
+  .tbd-panel{ margin:10px 24px 0; background:var(--panel); border:1px dashed var(--line-2); border-radius:12px; padding:12px 16px; }
+  .tbd-panel h4{ font-size:12px; color:var(--s-hold); margin-bottom:8px; font-weight:800; }
   .tbd-list{ display:flex; flex-wrap:wrap; gap:8px; }
   .tbd-item{ background:var(--s-hold-bg); border:1px solid var(--line); border-radius:8px; padding:6px 10px; font-size:12px; cursor:pointer; }
   .tbd-item b{ color:var(--text); } .tbd-item span{ color:var(--text-dim); }
-  .cal-wrap{ padding:14px 22px; }
-  .weekdays{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:8px; }
+
+  /* ── 캘린더 ── */
+  .cal-wrap{ padding:12px 24px; }
+  .weekdays{ display:grid; grid-template-columns:repeat(7,1fr); gap:7px; margin-bottom:7px; }
   .weekdays div{ text-align:center; font-size:12px; font-weight:700; color:var(--text-dim); padding:4px; }
-  .weekdays div.sun{ color:#ff7a7a; } .weekdays div.sat{ color:#7ab8ff; }
-  .grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
-  .cell{ background:var(--panel); border:1px solid var(--line); border-radius:12px; min-height:120px; padding:8px;
+  .weekdays div.sun{ color:#ff8080; } .weekdays div.sat{ color:#82b7ff; }
+  .grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:7px; }
+  .cell{ background:var(--panel); border:1px solid var(--line); border-radius:11px; min-height:112px; padding:8px;
     display:flex; flex-direction:column; gap:5px; position:relative; transition:.12s; }
-  .cell.other{ opacity:.32; }
-  .cell.today{ border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
-  .cell.holiday .num{ color:#ff7a7a !important; }
-  .cell .num{ font-size:13px; font-weight:700; color:var(--text-dim); display:flex; justify-content:space-between; align-items:center; }
-  .cell .holi{ font-size:10px; color:#ff7a7a; font-weight:600; }
-  .cell.sun .num{ color:#ff7a7a; } .cell.sat .num{ color:#7ab8ff; }
-  .event{ border-radius:8px; padding:5px 8px; font-size:12px; cursor:pointer; border-left:3px solid; line-height:1.3;
-    background:var(--panel-2); transition:.12s; overflow:hidden; }
-  .event:hover{ transform:translateY(-1px); box-shadow:0 3px 10px rgba(0,0,0,.3); }
+  .cell.other{ opacity:.3; }
+  .cell.today{ border-color:var(--lime); box-shadow:0 0 0 1px var(--lime) inset; }
+  .cell .num{ font-size:12px; font-weight:700; color:var(--text-dim); display:flex; justify-content:space-between; }
+  .cell .holi{ font-size:10px; color:#ff8080; }
+  .cell.sun .num{ color:#ff8080; } .cell.sat .num{ color:#82b7ff; }
+  .cell .add-mini{ position:absolute; top:6px; right:6px; width:20px; height:20px; border-radius:6px; background:var(--panel-2);
+    border:1px solid var(--line); color:var(--text-dim); font-size:13px; display:none; place-items:center; z-index:2; }
+  .cell:hover .add-mini{ display:grid; }
+  .cell .add-mini:hover{ color:var(--lime); border-color:var(--lime); }
+  .event{ border-radius:8px; padding:5px 8px; font-size:12px; cursor:pointer; border-left:3px solid; background:var(--panel-2); transition:.12s; overflow:hidden; }
+  .event:hover{ transform:translateY(-1px); }
   .event .ev-top{ display:flex; align-items:center; gap:4px; }
   .event .ev-time{ font-size:10px; font-weight:800; padding:1px 5px; border-radius:5px; background:rgba(255,255,255,.06); color:var(--text-dim); }
   .event .ev-artist{ font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .event .ev-title{ color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:11px; }
-  .event .ev-meta{ display:flex; align-items:center; gap:5px; margin-top:3px; font-size:10px; color:var(--text-mute); }
+  .event .ev-title{ color:var(--text-dim); font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .event .ev-meta{ display:flex; gap:5px; margin-top:3px; font-size:10px; color:var(--text-mute); }
   .event .star{ color:var(--star); }
-  .event.plan{ border-color:var(--s-plan); } .event.plan .stag{ color:var(--s-plan); }
-  .event.fix{ border-color:var(--s-fix); } .event.fix .stag{ color:var(--s-fix); }
-  .event.done{ border-color:var(--s-done); opacity:.72; } .event.done .stag{ color:var(--s-done); }
-  .event.hold{ border-color:var(--s-hold); } .event.hold .stag{ color:var(--s-hold); }
-  .list-wrap{ padding:14px 22px; display:none; }
-  .list-month{ margin-bottom:26px; }
+  .event.plan{ border-color:var(--s-plan); } .event.fix{ border-color:var(--s-fix); }
+  .event.done{ border-color:var(--s-done); opacity:.68; } .event.hold{ border-color:var(--s-hold); }
+
+  /* ── 리스트 ── */
+  .list-wrap{ padding:12px 24px; }
+  .list-month{ margin-bottom:24px; }
   .list-month h3{ font-size:15px; font-weight:800; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid var(--line); }
   table{ width:100%; border-collapse:collapse; }
   th{ text-align:left; font-size:12px; color:var(--text-dim); font-weight:700; padding:8px 12px; border-bottom:1px solid var(--line); }
-  td{ padding:11px 12px; font-size:13px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  td{ padding:10px 12px; font-size:13px; border-bottom:1px solid var(--line); vertical-align:middle; }
   tr.row:hover{ background:var(--panel); cursor:pointer; }
   .pill{ display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; }
   .pill .dot{ width:7px; height:7px; border-radius:50%; }
@@ -108,175 +160,354 @@
   .pill.fix{ background:var(--s-fix-bg); color:var(--s-fix); } .pill.fix .dot{ background:var(--s-fix); }
   .pill.done{ background:var(--s-done-bg); color:var(--s-done); } .pill.done .dot{ background:var(--s-done); }
   .pill.hold{ background:var(--s-hold-bg); color:var(--s-hold); } .pill.hold .dot{ background:var(--s-hold); }
-  .tag-label{ display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:6px; background:var(--accent-soft); color:var(--accent); }
-  .tag-note{ display:inline-block; font-size:10px; font-weight:700; padding:2px 7px; border-radius:6px; margin-left:5px; }
-  .note-open{ background:rgba(46,204,113,.14); color:#2ecc71; }
-  .note-closed{ background:rgba(245,166,35,.14); color:#f5a623; }
-  .empty{ text-align:center; color:var(--text-mute); padding:60px 20px; font-size:14px; }
-  /* 읽기전용 상세 모달 */
-  .overlay{ position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(3px); display:none; place-items:center; z-index:100; padding:20px; }
+  .tag-label{ font-size:10px; font-weight:700; padding:2px 7px; border-radius:6px; background:var(--lime-dim); color:var(--lime); }
+  .mini-seg{ display:inline-flex; gap:2px; vertical-align:middle; margin-right:6px; }
+  .mini-seg i{ width:9px; height:5px; border-radius:3px; background:var(--panel-2); display:inline-block; }
+  .mini-seg i.on{ background:var(--s-done); }
+
+  /* ── 운영 브리핑 ── */
+  .brief-wrap{ padding:16px 24px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .brief-card{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px 20px; }
+  .brief-card h4{ font-size:13px; font-weight:800; color:var(--lime); margin-bottom:14px; }
+  .big-num{ font-size:34px; font-weight:900; letter-spacing:-1px; }
+  .big-sub{ font-size:12px; color:var(--text-dim); margin-top:4px; }
+  .mbar-row{ display:flex; align-items:center; gap:10px; margin-bottom:7px; font-size:12px; }
+  .mbar-row .ml{ width:34px; color:var(--text-dim); font-weight:700; }
+  .mbar{ flex:1; height:14px; background:var(--panel-2); border-radius:5px; overflow:hidden; display:flex; }
+  .mbar i{ display:block; height:100%; }
+  .mbar .f-done{ background:var(--s-done); } .mbar .f-fix{ background:var(--s-fix); }
+  .mbar .f-plan{ background:var(--s-plan); }
+  .mbar-cnt{ width:24px; text-align:right; color:var(--text-dim); font-size:11px; }
+  .brief-full{ grid-column:1/-1; }
+
+  /* ── 모달 ── */
+  .overlay{ position:fixed; inset:0; background:rgba(0,0,0,.65); backdrop-filter:blur(3px); display:none; place-items:center; z-index:100; padding:20px; }
   .overlay.open{ display:grid; }
-  .detail{ background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); width:100%; max-width:420px; padding:24px; }
-  .detail .d-head{ display:flex; align-items:flex-start; gap:10px; margin-bottom:16px; }
-  .detail .d-artist{ font-size:20px; font-weight:800; }
-  .detail .d-title{ color:var(--text-dim); font-size:14px; margin-top:3px; }
-  .detail .d-row{ display:flex; gap:12px; padding:9px 0; border-top:1px solid var(--line); font-size:13px; }
-  .detail .d-row .k{ width:80px; color:var(--text-dim); flex:0 0 auto; font-weight:600; }
-  .detail .d-row .v{ color:var(--text); }
-  .detail .d-close{ margin-top:18px; width:100%; justify-content:center; }
-  .footer-note{ text-align:center; font-size:11px; color:var(--text-mute); padding:24px; line-height:1.7; }
-  @media (max-width:720px){ .cell{ min-height:auto; } .month-title{ font-size:18px; min-width:100px; } .search input{ width:130px; } .weekdays div{ font-size:10px; } }
-  @media print{ .topbar,.controls,.view-toggle,.search,.btn,.filters{ display:none !important; }
-    body{ background:#fff; color:#000; } .cell{ border-color:#ccc; background:#fff; min-height:100px; }
-    .event{ background:#f4f4f4; color:#000; } .event.done{ opacity:1; } }
+  .modal{ background:var(--panel); border:1px solid var(--line-2); border-radius:14px; width:100%; max-width:470px; padding:24px; max-height:92vh; overflow:auto; }
+  .modal h2{ font-size:18px; margin-bottom:16px; font-weight:800; }
+  .field{ margin-bottom:12px; }
+  .field.row2{ display:flex; gap:10px; } .field.row2>div{ flex:1; }
+  .field label{ display:block; font-size:12px; color:var(--text-dim); margin-bottom:5px; font-weight:600; }
+  .field input,.field select{ width:100%; background:var(--panel-2); border:1px solid var(--line); color:var(--text);
+    border-radius:9px; padding:10px 12px; font-size:13px; outline:none; }
+  .field input:focus,.field select:focus{ border-color:var(--lime); }
+  .modal-actions{ display:flex; gap:10px; margin-top:18px; }
+  .modal-actions .btn{ flex:1; justify-content:center; }
+  .btn.danger{ color:#ff8080; border-color:transparent; background:transparent; flex:0 0 auto; }
+  .btn.danger:hover{ background:rgba(255,128,128,.1); }
+
+  .footer-note{ text-align:center; font-size:11px; color:var(--text-mute); padding:22px; line-height:1.7; }
+  .hide{ display:none !important; }
+  body.readonly .edit-only{ display:none !important; }
+  body.readonly .cell .add-mini{ display:none !important; }
+
+  @media (max-width:1100px){ .hero{ grid-template-columns:1fr 1fr; } .flow-strip{ grid-template-columns:repeat(2,1fr); } .brief-wrap{ grid-template-columns:1fr; } }
+  @media (max-width:640px){ .hero{ grid-template-columns:1fr; } .flow-strip{ grid-template-columns:1fr; } .cell{ min-height:auto; } }
+  @media print{ .topbar,.filters-row,.viewtabs,.month-tabs,.add-mini,.flow-stage{ display:none !important; }
+    body{ background:#fff; color:#000; } .cell,.flow-card,.brief-card{ border-color:#ccc; background:#fff; } .event{ background:#f4f4f4; color:#000; opacity:1; } }
 </style>
 </head>
 <body>
 
+<!-- 상단바 -->
 <div class="topbar">
-  <div class="brand">
-    <div class="logo">🎵</div>
-    <div><h1>음원 발매 일정</h1><p>2026 Release Calendar</p></div>
+  <div style="display:flex;align-items:center;gap:11px">
+    <div class="logo">R</div>
+    <div class="brand"><h1>음원 발매 운영</h1><p>2026 RELEASE OPERATIONS</p></div>
   </div>
-  <span class="readonly-badge">👁 보기 전용</span>
+  <span class="sync-pill"><span class="dot"></span><span id="syncStatus">로컬 편집 모드</span></span>
   <div class="spacer"></div>
-  <div class="search">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-    <input id="searchInput" placeholder="아티스트·곡·담당 검색">
-  </div>
+  <button class="btn lime edit-only" onclick="openModal()">＋ 앨범 추가</button>
+  <button class="btn" onclick="copyLink()">🔗 링크 복사</button>
+  <button class="btn" onclick="exportCSV()">CSV</button>
+  <button class="btn edit-only" onclick="exportData()" title="JSON 백업">⬇</button>
+  <button class="btn edit-only" onclick="document.getElementById('importFile').click()" title="JSON 불러오기">⬆</button>
   <button class="btn" onclick="window.print()">🖨 인쇄 / PDF</button>
+  <button class="btn lime edit-only" onclick="syncToPublic()">🌐 공개 반영</button>
+  <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
 </div>
 
-<div class="controls">
-  <div class="month-nav">
-    <button onclick="changeMonth(-1)">‹</button>
-    <div class="month-title" id="monthTitle"></div>
-    <button onclick="changeMonth(1)">›</button>
+<!-- 히어로: 연간 현황 -->
+<div class="hero">
+  <div>
+    <div class="today-line" id="todayLine"></div>
+    <h2>2026 음원 발매 캘린더</h2>
   </div>
-  <button class="btn" onclick="goToday()">오늘</button>
-  <div class="view-toggle">
-    <button id="viewCal" class="active" onclick="setView('cal')">📅 캘린더</button>
-    <button id="viewList" onclick="setView('list')">📋 리스트</button>
+  <div>
+    <div class="k">다음 발매</div>
+    <div class="next-date" id="nextDate">-</div>
+    <div class="next-sub" id="nextSub"></div>
   </div>
-  <div class="spacer"></div>
-  <select class="filter-sel" id="labelFilter" onchange="render()"><option value="">전체 레이블</option></select>
-  <select class="filter-sel" id="artistFilter" onchange="render()"><option value="">전체 아티스트</option></select>
-  <div class="filters" id="statusFilters"></div>
+  <div>
+    <div class="k">연간 진행도</div>
+    <div class="goal-top">완료 <b id="goalNum">0/0</b><span class="pct" id="goalPct">0%</span></div>
+    <div class="goal-bar"><i id="goalBar" style="width:0%"></i></div>
+    <div class="goal-dots" id="goalDots"></div>
+  </div>
+  <div>
+    <div class="k">표시 설정</div>
+    <div class="toggle-wrap">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="switch on" id="doneSwitch" onclick="toggleDone()"><i></i></div>
+        <span class="toggle-label">발매완료 포함</span>
+      </div>
+      <span class="toggle-sub" id="doneSub"></span>
+    </div>
+  </div>
+</div>
+
+<!-- 필터 -->
+<div class="filters-row">
+  <div class="search">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    <input id="searchInput" placeholder="아티스트·곡·메모·희망 시기 검색">
+  </div>
+  <select class="sel" id="artistFilter" onchange="render()"><option value="">전체 아티스트</option></select>
+  <select class="sel" id="labelFilter" onchange="render()"><option value="">전체 레이블</option></select>
+  <span class="count-note" id="countNote"></span>
+</div>
+
+<!-- 뷰 탭 -->
+<div class="viewtabs">
+  <button class="viewtab" id="tab-brief" onclick="setView('brief')">운영 브리핑</button>
+  <button class="viewtab active" id="tab-cal" onclick="setView('cal')">월간 캘린더</button>
+  <button class="viewtab" id="tab-list" onclick="setView('list')">전체 리스트</button>
+  <div class="yearnav">
+    <button onclick="changeMonth(-1)">←</button>
+    <span id="ymLabel">2026년 7월</span>
+    <button onclick="changeMonth(1)">→</button>
+  </div>
 </div>
 
 <div class="month-tabs" id="monthTabs"></div>
-<div class="stats" id="stats"></div>
+
+<!-- 업무 진행 -->
+<div id="flowSection">
+  <div class="flow-head">
+    <div><div class="eyebrow">UPCOMING WORKFLOW</div><h3>업무 진행</h3></div>
+    <div class="note" id="flowNote">오늘 이후 5건 · 단계 변경 시 자동 저장</div>
+  </div>
+  <div class="flow-strip" id="flowStrip"></div>
+</div>
+
 <div class="tbd-panel" id="tbdPanel" style="display:none"></div>
 
+<!-- 캘린더 -->
 <div class="cal-wrap" id="calWrap">
   <div class="weekdays"><div class="sun">일</div><div>월</div><div>화</div><div>수</div><div>목</div><div>금</div><div class="sat">토</div></div>
   <div class="grid" id="grid"></div>
 </div>
-<div class="list-wrap" id="listWrap"></div>
 
+<!-- 리스트 -->
+<div class="list-wrap hide" id="listWrap"></div>
+
+<!-- 브리핑 -->
+<div class="brief-wrap hide" id="briefWrap"></div>
+
+<!-- 모달 -->
 <div class="overlay" id="overlay">
-  <div class="detail" id="detailBox"></div>
+  <div class="modal">
+    <h2 id="modalTitle">앨범 추가</h2>
+    <input type="hidden" id="editId">
+    <div class="field row2">
+      <div><label>발매일 (미정이면 비워두기)</label><input type="date" id="fDate" min="2026-01-01" max="2026-12-31"></div>
+      <div><label>시간</label>
+        <select id="fTime"><option value="">미정</option><option value="12:00">12:00 (정오)</option><option value="18:00">18:00</option><option value="00:00">자정</option></select></div>
+    </div>
+    <div class="field"><label>아티스트</label><input type="text" id="fArtist" placeholder="예) 음유시인"></div>
+    <div class="field"><label>곡명 / 앨범</label><input type="text" id="fTitle" placeholder="예) 정규 10곡"></div>
+    <div class="field row2">
+      <div><label>담당 / 레이블</label><input type="text" id="fLabel" list="labelOptions" placeholder="예) CJ ENM"><datalist id="labelOptions"></datalist></div>
+      <div><label>공개 여부</label>
+        <select id="fNote"><option value="">-</option><option value="노출">노출</option><option value="미노출">미노출</option></select></div>
+    </div>
+    <div class="field row2">
+      <div><label>진행 상태</label>
+        <select id="fStatus"><option value="plan">준비중</option><option value="fix">확정</option><option value="done">발매완료</option><option value="hold">보류/일정미정</option></select></div>
+      <div><label>업무 단계</label><select id="fStage"></select></div>
+    </div>
+    <div class="field"><label>희망 시기 (일정 미정 건)</label><input type="text" id="fWish" placeholder="예) 8월 중순 이후"></div>
+    <div class="field"><label>비고 / 메모</label><input type="text" id="fMemo" placeholder="예) 자료 7/23 완료 · 신규 아티스트 등록 필요"></div>
+    <div class="modal-actions">
+      <button class="btn danger" id="deleteBtn" onclick="deleteEvent()" style="display:none">삭제</button>
+      <button class="btn" onclick="closeModal()">취소</button>
+      <button class="btn lime" onclick="saveEvent()">저장</button>
+    </div>
+  </div>
 </div>
 
-<div class="footer-note">보기 전용 페이지입니다 · 일정 문의는 담당자에게 · 2026 음원 발매 일정</div>
+<div class="footer-note">
+  수정 후 <b>🌐 공개 반영</b>을 누르면 팀 공유 링크에 1~2분 내 자동 적용됩니다 · 공유 링크: withdoko.github.io/release-calendar-2026
+</div>
 
 <script>
+/* ============================================================
+   기본 정의
+   ============================================================ */
 const STATUS={plan:{label:'준비중',cls:'plan'},fix:{label:'확정',cls:'fix'},done:{label:'발매완료',cls:'done'},hold:{label:'보류',cls:'hold'}};
-const TODAY=new Date(2026,6,20);
-const HOLIDAYS={'2026-07-17':'제헌절','2026-08-15':'광복절','2026-08-17':'대체휴일','2026-09-25':'추석','2026-10-03':'개천절','2026-10-05':'대체휴일','2026-10-09':'한글날','2026-12-25':'성탄절'};
+const STAGES=['기획','제작','믹스·마스터','유통자료','발매자료','발매'];   // 6단계
+const HOLIDAYS={'2026-01-01':'신정','2026-02-16':'설연휴','2026-02-17':'설날','2026-02-18':'설연휴','2026-03-01':'삼일절','2026-03-02':'대체휴일','2026-05-05':'어린이날','2026-05-24':'부처님오신날','2026-05-25':'대체휴일','2026-06-06':'현충일','2026-07-17':'제헌절','2026-08-15':'광복절','2026-08-17':'대체휴일','2026-09-24':'추석연휴','2026-09-25':'추석','2026-09-26':'추석연휴','2026-10-03':'개천절','2026-10-05':'대체휴일','2026-10-09':'한글날','2026-12-25':'성탄절'};
+const PUB_URL='https://withdoko.github.io/release-calendar-2026/';
+const NOW=new Date();
+const todayStr=()=>`${NOW.getFullYear()}-${String(NOW.getMonth()+1).padStart(2,'0')}-${String(NOW.getDate()).padStart(2,'0')}`;
 
-/* ★ 데이터 (기본값 — 서버의 data.json이 있으면 그것으로 자동 교체됨) */
-let DATA=[
-  {date:'2026-07-06',time:'18:00',artist:'강태관',title:'사슬같은 사랑',label:'지니',status:'done'},
-  {date:'2026-07-07',time:'18:00',artist:'음유시인',title:'자꾸 그러면 널 좋아하게 될 것 같아',label:'우조엔터',status:'done'},
-  {date:'2026-07-13',time:'12:00',artist:'정립',title:'나를 보고 어찌 그리 눈을 반짝이는가',label:'우조엔터',status:'done'},
-  {date:'2026-07-13',time:'12:00',artist:'황루아',title:'루아는 특별하지 않아 멋있을뿐이지',label:'우조엔터',status:'done'},
-  {date:'2026-07-16',time:'12:00',artist:'DOKO(도코)',title:'친구',label:'플럭서스',status:'done',star:true},
-  {date:'2026-07-21',time:'18:00',artist:'권민',title:'Just Say Yes!',label:'지니',status:'fix'},
-  {date:'2026-07-22',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
-  {date:'2026-07-24',time:'18:00',artist:'정하경',title:'공룡만큼 사랑해',label:'지니',status:'fix'},
-  {date:'2026-07-25',time:'12:00',artist:'돌고래 합창단',title:'돌고래 친구들 이야기 #1',label:'지니',status:'fix'},
-  {date:'2026-07-27',time:'12:00',artist:'낭만보이',title:'내가 왜 네 아빠야',label:'지니',status:'fix'},
-  {date:'2026-07-28',time:'18:00',artist:'하비',title:'그대에게 난 뭐였나요',label:'지니',status:'fix'},
-  {date:'2026-07-29',time:'18:00',artist:'DOKO(도코)',title:'파란 밤 끝',label:'지니',status:'fix',star:true},
-  {date:'2026-07-31',time:'',artist:'정이한',title:'(곡명 미정)',label:'지니',status:'fix'},
-  {date:'2026-08-08',time:'12:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',star:true},
-  {date:'2026-08-19',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
-  {date:'2026-09-13',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
-  {date:'2026-09-24',time:'18:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',star:true},
-  {date:'2026-09-27',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출'},
-  {date:'2026-10-09',time:'18:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',star:true},
-  {date:'2026-10-17',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
-  {date:'2026-10-21',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출'},
-  {date:'2026-11-14',time:'18:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',star:true},
-  {date:'2026-11-16',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
-  {date:'2026-11-19',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출'},
-  {date:'2026-12-10',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출'},
-  {date:'2026-12-18',time:'18:00',artist:'DOKO(도코)',title:'정규 10곡 (예정)',label:'CJ ENM',status:'plan',note:'노출',star:true},
-  {date:'2026-12-28',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출'},
-  /* ── 8월 발매 희망 라인업 (일정 미정 · 총 10건/11곡) ── */
-  {tbd:true,month:'2026-08',artist:'류민희',title:'나보다 꼭 행복해야해',status:'hold',wish:'8월 중 (시기 미지정)',memo:'녹음 완료'},
-  {tbd:true,month:'2026-08',artist:'정하경',title:'너 진짜 너무해',status:'hold',wish:'8월 초',memo:'자료 7/23 완료'},
-  {tbd:true,month:'2026-08',artist:'낭만보이',title:'숨이차도 널 놓지 못해',status:'hold',wish:'8월 중 아무 때나',memo:'자료 7/23 준비 완료'},
-  {tbd:true,month:'2026-08',artist:'도코',title:'너는 알텐데',status:'hold',star:true,wish:'8/12 ~ 8/17',memo:'자료 7/23 완료 · 8/8 발매건과 3일 이상 간격 필요'},
-  {tbd:true,month:'2026-08',artist:'도코',title:'운명',status:'hold',star:true,wish:'8월 마지막 주',memo:'자료 7월 말일자 완료'},
-  {tbd:true,month:'2026-08',artist:'정석',title:'사랑하는 법을 몰라서',label:'지니',status:'hold',wish:'8월 첫째 주',memo:'준비 완료'},
-  {tbd:true,month:'2026-08',artist:'김유안, 신재하',title:'More than words (리메이크)',label:'지니',status:'hold',wish:'8월 첫째~둘째 주',memo:'듀엣 + 솔로 2곡 구성 · 자료 7/23 완료'},
-  {tbd:true,month:'2026-08',artist:'김초록',title:'천천히 천천히',status:'hold',wish:'8월 중순 이후',memo:'🆕 신규 아티스트 등록 필요 · 신예 인디 보컬 첫 데뷔곡'},
-  {tbd:true,month:'2026-08',artist:'Min',title:'하루 종일 너 생각만',status:'hold',wish:'8월 중순 이후',memo:'자료 7월 말일자 완료'},
-  {tbd:true,month:'2026-08',artist:'영리치',title:'라운지 새벽',status:'hold',wish:'8/16 이후',memo:'🆕 신규 아티스트 등록 필요 · 도코 목소리 부캐 첫 데뷔곡'},
-  {tbd:true,month:'2026-09',artist:'오연하',title:'나랑 같이 걸을래',label:'지니',status:'hold'},
-].map((e,i)=>({...e,id:'r'+i}));
+/* ============================================================
+   데이터 (stage: 완료된 업무 단계 수 0~6)
+   ============================================================ */
+const SEED=[
+  /* 7월 */
+  {date:'2026-07-06',time:'18:00',artist:'강태관',title:'사슬같은 사랑',label:'지니',status:'done',stage:6},
+  {date:'2026-07-07',time:'18:00',artist:'음유시인',title:'자꾸 그러면 널 좋아하게 될 것 같아',label:'우조엔터',status:'done',stage:6},
+  {date:'2026-07-13',time:'12:00',artist:'정립',title:'나를 보고 어찌 그리 눈을 반짝이는가',label:'우조엔터',status:'done',stage:6},
+  {date:'2026-07-13',time:'12:00',artist:'황루아',title:'루아는 특별하지 않아 멋있을뿐이지',label:'우조엔터',status:'done',stage:6},
+  {date:'2026-07-16',time:'12:00',artist:'DOKO(도코)',title:'친구',label:'플럭서스',status:'done',stage:6,star:true},
+  {date:'2026-07-21',time:'18:00',artist:'권민',title:'Just Say Yes!',label:'지니',status:'fix',stage:5},
+  {date:'2026-07-22',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출',stage:5},
+  {date:'2026-07-24',time:'18:00',artist:'정하경',title:'공룡만큼 사랑해',label:'지니',status:'fix',stage:5},
+  {date:'2026-07-25',time:'12:00',artist:'돌고래 합창단',title:'돌고래 친구들 이야기 #1',label:'지니',status:'fix',stage:5},
+  {date:'2026-07-27',time:'12:00',artist:'낭만보이',title:'내가 왜 네 아빠야',label:'지니',status:'fix',stage:5},
+  {date:'2026-07-28',time:'18:00',artist:'하비',title:'그대에게 난 뭐였나요',label:'지니',status:'fix',stage:5},
+  {date:'2026-07-29',time:'18:00',artist:'DOKO(도코)',title:'파란 밤 끝',label:'지니',status:'fix',stage:5,star:true},
+  {date:'2026-07-31',time:'',artist:'정이한',title:'(곡명 미정)',label:'지니',status:'fix',stage:4},
+  /* 8월~12월 CJ */
+  {date:'2026-08-08',time:'12:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',stage:4,star:true},
+  {date:'2026-08-19',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출',stage:4},
+  {date:'2026-09-13',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출',stage:3},
+  {date:'2026-09-24',time:'18:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',stage:3,star:true},
+  {date:'2026-09-27',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출',stage:3},
+  {date:'2026-10-09',time:'18:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',stage:2,star:true},
+  {date:'2026-10-17',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출',stage:2},
+  {date:'2026-10-21',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출',stage:2},
+  {date:'2026-11-14',time:'18:00',artist:'DOKO(도코)',title:'싱글',label:'CJ ENM',status:'fix',note:'노출',stage:1,star:true},
+  {date:'2026-11-16',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출',stage:1},
+  {date:'2026-11-19',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출',stage:1},
+  {date:'2026-12-10',time:'12:00',artist:'음유시인',title:'정규 10곡',label:'CJ ENM',status:'fix',note:'미노출',stage:1},
+  {date:'2026-12-18',time:'18:00',artist:'DOKO(도코)',title:'정규 10곡 (예정)',label:'CJ ENM',status:'plan',note:'노출',stage:1,star:true},
+  {date:'2026-12-28',time:'12:00',artist:'음유시인',title:'미니 5곡',label:'CJ ENM',status:'fix',note:'노출',stage:1},
+  /* 일정 미정 — 8월 발매 희망 */
+  {tbd:true,month:'2026-08',artist:'류민희',title:'나보다 꼭 행복해야해',status:'hold',stage:2,wish:'8월 중 (시기 미지정)',memo:'녹음 완료'},
+  {tbd:true,month:'2026-08',artist:'정하경',title:'너 진짜 너무해',status:'hold',stage:4,wish:'8월 초',memo:'자료 7/23 완료'},
+  {tbd:true,month:'2026-08',artist:'낭만보이',title:'숨이차도 널 놓지 못해',status:'hold',stage:4,wish:'8월 중 아무 때나',memo:'자료 7/23 준비 완료'},
+  {tbd:true,month:'2026-08',artist:'도코',title:'너는 알텐데',status:'hold',stage:4,star:true,wish:'8/12 ~ 8/17',memo:'자료 7/23 완료 · 8/8 발매건과 3일 이상 간격 필요'},
+  {tbd:true,month:'2026-08',artist:'도코',title:'운명',status:'hold',stage:4,star:true,wish:'8월 마지막 주',memo:'자료 7월 말일자 완료'},
+  {tbd:true,month:'2026-08',artist:'정석',title:'사랑하는 법을 몰라서',label:'지니',status:'hold',stage:4,wish:'8월 첫째 주',memo:'준비 완료'},
+  {tbd:true,month:'2026-08',artist:'김유안, 신재하',title:'More than words (리메이크)',label:'지니',status:'hold',stage:4,wish:'8월 첫째~둘째 주',memo:'듀엣 + 솔로 2곡 구성 · 자료 7/23 완료'},
+  {tbd:true,month:'2026-08',artist:'김초록',title:'천천히 천천히',status:'hold',stage:2,wish:'8월 중순 이후',memo:'🆕 신규 아티스트 등록 필요 · 신예 인디 보컬 첫 데뷔곡'},
+  {tbd:true,month:'2026-08',artist:'Min',title:'하루 종일 너 생각만',status:'hold',stage:4,wish:'8월 중순 이후',memo:'자료 7월 말일자 완료'},
+  {tbd:true,month:'2026-08',artist:'영리치',title:'라운지 새벽',status:'hold',stage:4,wish:'8/16 이후',memo:'🆕 신규 아티스트 등록 필요 · 도코 목소리 부캐 첫 데뷔곡'},
+  {tbd:true,month:'2026-09',artist:'오연하',title:'나랑 같이 걸을래',label:'지니',status:'hold',stage:1},
+];
 
-let curYear=2026,curMonth=6,view='cal',searchTerm='';
-let activeStatus={plan:true,fix:true,done:true,hold:true};
+/* 공개 링크(github.io)에서 열리면 자동으로 '보기 전용' 모드 */
+const READONLY=location.hostname.endsWith('github.io');
+const STORE_KEY='release_calendar_2026_v4';
+let events=loadData();
+function loadData(){ if(!READONLY){ try{ const r=localStorage.getItem(STORE_KEY); if(r) return JSON.parse(r); }catch(e){} }
+  return SEED.map((e,i)=>({...e,id:'s'+i})); }
+function saveData(){ if(READONLY) return; try{ localStorage.setItem(STORE_KEY,JSON.stringify(events)); }catch(e){} }
 
-function buildStatusFilters(){ const w=document.getElementById('statusFilters'); w.innerHTML='';
-  Object.entries(STATUS).forEach(([k,s])=>{ const c=document.createElement('button');
-    c.className='filter-chip '+(activeStatus[k]?'active':'off');
-    c.innerHTML=`<span class="dot" style="background:var(--s-${k})"></span>${s.label}`;
-    c.onclick=()=>{activeStatus[k]=!activeStatus[k];buildStatusFilters();render();}; w.appendChild(c); }); }
-function buildDropdowns(){
-  const a=document.getElementById('artistFilter');
-  a.innerHTML='<option value="">전체 아티스트</option>'+[...new Set(DATA.map(e=>e.artist))].sort().map(x=>`<option>${escapeHtml(x)}</option>`).join('');
-  const l=document.getElementById('labelFilter');
-  l.innerHTML='<option value="">전체 레이블</option>'+[...new Set(DATA.map(e=>e.label).filter(Boolean))].sort().map(x=>`<option>${escapeHtml(x)}</option>`).join('');
-}
-function pass(e){ if(!activeStatus[e.status]) return false;
+let curYear=2026, curMonth=NOW.getFullYear()===2026?NOW.getMonth():6;
+let view='cal', searchTerm='', includeDone=true;
+try{ const t=localStorage.getItem('rc_includeDone'); if(t!==null) includeDone=t==='1'; }catch(e){}
+
+/* ============================================================
+   필터
+   ============================================================ */
+function passFilter(e){
+  if(!includeDone && e.status==='done') return false;
   const a=document.getElementById('artistFilter').value, l=document.getElementById('labelFilter').value;
   if(a&&e.artist!==a) return false; if(l&&e.label!==l) return false;
-  if(searchTerm){ const t=(e.artist+' '+e.title+' '+(e.label||'')+' '+(e.note||'')).toLowerCase(); if(!t.includes(searchTerm)) return false; }
-  return true; }
-function dated(){ return DATA.filter(e=>!e.tbd&&pass(e)); }
-function tbd(){ return DATA.filter(e=>e.tbd&&pass(e)); }
+  if(searchTerm){ const t=(e.artist+' '+e.title+' '+(e.label||'')+' '+(e.note||'')+' '+(e.wish||'')+' '+(e.memo||'')).toLowerCase();
+    if(!t.includes(searchTerm)) return false; }
+  return true;
+}
+const dated=()=>events.filter(e=>!e.tbd&&passFilter(e));
+const tbdEv=()=>events.filter(e=>e.tbd&&passFilter(e));
+const allDated=()=>events.filter(e=>!e.tbd);
 
-function render(){ document.getElementById('monthTitle').textContent=(curMonth+1)+'월'; monthTabs(); stats(); renderTbd();
-  if(view==='cal') cal(); else list(); }
-function monthTabs(){
-  const counts={}; dated().forEach(e=>{ const m=parseInt(e.date.slice(5,7)); counts[m]=(counts[m]||0)+1; });
-  const w=document.getElementById('monthTabs');
-  w.innerHTML=Array.from({length:12},(_,i)=>{ const mo=i+1; const c=counts[mo]||0;
-    return `<button class="month-tab ${curMonth===i?'active':''} ${c===0?'empty':''}" onclick="setMonth(${i})">${mo}월${c?`<span class="cnt">${c}</span>`:''}</button>`;
+/* ============================================================
+   렌더링 총괄
+   ============================================================ */
+function render(){
+  renderHero(); renderMonthTabs(); renderFlow(); renderTbd();
+  document.getElementById('ymLabel').textContent=`${curYear}년 ${curMonth+1}월`;
+  document.getElementById('countNote').textContent=`${dated().length+tbdEv().length}건 표시`;
+  document.getElementById('calWrap').classList.toggle('hide',view!=='cal');
+  document.getElementById('listWrap').classList.toggle('hide',view!=='list');
+  document.getElementById('briefWrap').classList.toggle('hide',view!=='brief');
+  document.getElementById('flowSection').classList.toggle('hide',view==='brief');
+  ['brief','cal','list'].forEach(v=>document.getElementById('tab-'+v).classList.toggle('active',view===v));
+  if(view==='cal') renderCalendar(); else if(view==='list') renderList(); else renderBrief();
+}
+
+function renderHero(){
+  const w=['일','월','화','수','목','금','토'];
+  document.getElementById('todayLine').textContent=`${NOW.getFullYear()}년 ${NOW.getMonth()+1}월 ${NOW.getDate()}일 ${w[NOW.getDay()]} · 공동 편집`;
+  // 다음 발매
+  const t=todayStr();
+  const up=allDated().filter(e=>e.date>=t&&e.status!=='done').sort((a,b)=>a.date===b.date?(a.time||'').localeCompare(b.time||''):a.date.localeCompare(b.date));
+  if(up.length){ const n=up[0]; const d=new Date(n.date);
+    document.getElementById('nextDate').textContent=`${d.getMonth()+1}월 ${d.getDate()}일 (${w[d.getDay()]})${n.time?' '+n.time:''}`;
+    document.getElementById('nextSub').textContent=`${n.artist} · ${n.title}`;
+  } else { document.getElementById('nextDate').textContent='예정 없음'; document.getElementById('nextSub').textContent=''; }
+  // 연간 진행도
+  const all=allDated(); const doneN=all.filter(e=>e.status==='done').length;
+  const pct=all.length?Math.round(doneN/all.length*100):0;
+  document.getElementById('goalNum').textContent=`${doneN}/${all.length}`;
+  document.getElementById('goalPct').textContent=pct+'%';
+  document.getElementById('goalBar').style.width=pct+'%';
+  const c={fix:0,plan:0,hold:0}; events.forEach(e=>{ if(e.status!=='done'&&c[e.status]!==undefined)c[e.status]++; });
+  document.getElementById('goalDots').innerHTML=
+    `<span><span class="dt" style="background:var(--s-fix)"></span>확정 <b>${c.fix}</b></span>`+
+    `<span><span class="dt" style="background:var(--s-plan)"></span>준비중 <b>${c.plan}</b></span>`+
+    `<span><span class="dt" style="background:var(--s-hold)"></span>보류·미정 <b>${c.hold}</b></span>`;
+  // 토글
+  document.getElementById('doneSwitch').classList.toggle('on',includeDone);
+  document.getElementById('doneSub').textContent=includeDone?`완료 ${doneN}건 표시 중`:`완료 ${doneN}건 숨김`;
+}
+
+function renderMonthTabs(){
+  const counts={}; allDated().forEach(e=>{ const m=parseInt(e.date.slice(5,7)); counts[m]=(counts[m]||0)+1; });
+  document.getElementById('monthTabs').innerHTML=Array.from({length:12},(_,i)=>{
+    const mo=i+1,c=counts[mo]||0;
+    return `<button class="month-tab ${curMonth===i?'active':''} ${c===0?'empty':''}" onclick="setMonth(${i})">${mo}월${c?` (${c}앨범)`:''}</button>`;
   }).join('');
 }
-function setMonth(i){ curYear=2026; curMonth=i; if(view!=='cal'){view='cal'; document.getElementById('viewCal').classList.add('active'); document.getElementById('viewList').classList.remove('active');} render(); window.scrollTo({top:0,behavior:'smooth'}); }
-function stats(){ const de=dated();
-  const me=de.filter(e=>{const d=new Date(e.date);return d.getFullYear()===curYear&&d.getMonth()===curMonth;});
-  const c={plan:0,fix:0,done:0,hold:0}; DATA.filter(pass).forEach(e=>c[e.status]++);
-  document.getElementById('stats').innerHTML=
-    `<div class="stat"><b>${me.length}</b>${curMonth+1}월 발매</div>`+
-    `<div class="stat"><b>${de.length}</b>연간 전체(확정일)</div>`+
-    `<div class="stat" style="color:var(--s-done)"><b>${c.done}</b>발매완료</div>`+
-    `<div class="stat" style="color:var(--s-fix)"><b>${c.fix}</b>확정</div>`+
-    `<div class="stat" style="color:var(--s-plan)"><b>${c.plan}</b>준비중</div>`+
-    `<div class="stat" style="color:var(--s-hold)"><b>${c.hold}</b>보류·미정</div>`; }
-function renderTbd(){ const p=document.getElementById('tbdPanel'), it=tbd();
-  if(!it.length){ p.style.display='none'; return; } p.style.display='block';
-  p.innerHTML=`<h4>📌 일정 미정 · 발매 희망 (${it.length}건)</h4><div class="tbd-list">`+
-    it.map(e=>`<div class="tbd-item" onclick="detail('${e.id}')"><b>${e.star?'★ ':''}${escapeHtml(e.artist)}</b> <span>· ${escapeHtml(e.title)}</span><span style="color:var(--text-mute)"> · ${parseInt((e.month||'').slice(5))}월${e.wish?` · 희망 ${escapeHtml(e.wish)}`:''}${e.memo&&e.memo.includes('🆕')?' · 🆕신규등록':''}</span></div>`).join('')+`</div>`; }
-function tb(t){ return t?`<span class="ev-time">${t}</span>`:''; }
 
-function cal(){ document.getElementById('calWrap').style.display='block'; document.getElementById('listWrap').style.display='none';
+/* 다가오는 5건 + 단계 진행 */
+function renderFlow(){
+  const t=todayStr();
+  const up=dated().filter(e=>e.date>=t&&e.status!=='done')
+    .sort((a,b)=>a.date===b.date?(a.time||'').localeCompare(b.time||''):a.date.localeCompare(b.date)).slice(0,5);
+  document.getElementById('flowNote').textContent=`오늘 이후 ${up.length}건 · 단계 변경 시 자동 저장`;
+  const strip=document.getElementById('flowStrip');
+  if(!up.length){ strip.innerHTML='<div class="flow-empty">오늘 이후 예정된 발매가 없습니다.</div>'; return; }
+  strip.innerHTML=up.map(e=>{
+    const d=new Date(e.date); const st=e.stage||0;
+    const opts=STAGES.map((s,i)=>`<option value="${i+1}" ${st===i+1?'selected':''}>${s}</option>`).join('');
+    const stageUI=READONLY
+      ? `<span class="flow-stage" style="cursor:default">${st?STAGES[st-1]:'기획 전'}</span>`
+      : `<select class="flow-stage" onclick="event.stopPropagation()" onchange="setStage('${e.id}',this.value)">
+          <option value="0" ${st===0?'selected':''}>기획 전</option>${opts}</select>`;
+    return `<div class="flow-card" onclick="openModal('${e.id}')">
+      <div class="flow-top"><span class="flow-date">${d.getMonth()+1}.${d.getDate()}</span>${stageUI}</div>
+      <div class="flow-title">${e.star?'<span class="star">★</span> ':''}${esc(e.title)}</div>
+      <div class="flow-sub">${esc(e.artist)}${e.label?' · '+esc(e.label):''}</div>
+      <div class="seg-row">${STAGES.map((_,i)=>`<span class="seg ${i<st?'on':''}"></span>`).join('')}<span class="seg-num">${st}/6</span></div>
+    </div>`;
+  }).join('');
+}
+function setStage(id,v){ const e=events.find(x=>x.id===id); if(!e) return; e.stage=parseInt(v); saveData(); render(); }
+
+function renderTbd(){
+  const p=document.getElementById('tbdPanel'), it=tbdEv();
+  if(!it.length||view==='brief'){ p.style.display='none'; return; }
+  p.style.display='block';
+  p.innerHTML=`<h4>📌 일정 미정 · 발매 희망 (${it.length}건)</h4><div class="tbd-list">`+
+    it.map(e=>`<div class="tbd-item" onclick="openModal('${e.id}')"><b>${e.star?'★ ':''}${esc(e.artist)}</b> <span>· ${esc(e.title)}</span><span style="color:var(--text-mute)"> · ${parseInt((e.month||'').slice(5))}월${e.wish?` · 희망 ${esc(e.wish)}`:''}${e.memo&&e.memo.includes('🆕')?' · 🆕신규등록':''}</span></div>`).join('')+'</div>';
+}
+
+function renderCalendar(){
   const g=document.getElementById('grid'); g.innerHTML='';
   const startDay=new Date(curYear,curMonth,1).getDay();
   const dim=new Date(curYear,curMonth+1,0).getDate(), pdim=new Date(curYear,curMonth,0).getDate();
@@ -286,75 +517,213 @@ function cal(){ document.getElementById('calWrap').style.display='block'; docume
   for(let i=startDay-1;i>=0;i--) cells.push({day:pdim-i,other:true});
   for(let d=1;d<=dim;d++) cells.push({day:d,other:false});
   while(cells.length<42) cells.push({day:cells.length-startDay-dim+1,other:true});
-  cells.forEach((c,idx)=>{ const div=document.createElement('div'); const dow=idx%7;
+  cells.forEach((c,idx)=>{
+    const div=document.createElement('div'); const dow=idx%7;
     const ds=`${curYear}-${String(curMonth+1).padStart(2,'0')}-${String(c.day).padStart(2,'0')}`;
     const holi=!c.other?HOLIDAYS[ds]:null;
-    div.className='cell'+(c.other?' other':'')+(dow===0?' sun':'')+(dow===6?' sat':'')+(holi?' holiday':'');
-    if(!c.other&&TODAY.getFullYear()===curYear&&TODAY.getMonth()===curMonth&&TODAY.getDate()===c.day) div.classList.add('today');
+    div.className='cell'+(c.other?' other':'')+(dow===0?' sun':'')+(dow===6?' sat':'');
+    if(!c.other&&ds===todayStr()) div.classList.add('today');
     let h=`<div class="num"><span>${c.day}</span>${holi?`<span class="holi">${holi}</span>`:''}</div>`;
-    if(!c.other&&by[ds]) by[ds].forEach(e=>{ h+=`<div class="event ${STATUS[e.status].cls}" onclick="detail('${e.id}')">
-      <div class="ev-top">${tb(e.time)}<span class="ev-artist">${e.star?'<span class="star">★</span>':''}${escapeHtml(e.artist)}</span></div>
-      <div class="ev-title">${escapeHtml(e.title)}${e.note?` · ${escapeHtml(e.note)}`:''}</div>
-      <div class="ev-meta"><span class="stag">●</span>${escapeHtml(e.label||'-')} · ${STATUS[e.status].label}</div></div>`; });
-    div.innerHTML=h; g.appendChild(div); }); }
+    if(!c.other) h+=`<div class="add-mini" onclick="openModal(null,'${ds}')">＋</div>`;
+    if(!c.other&&by[ds]) by[ds].forEach(e=>{
+      h+=`<div class="event ${STATUS[e.status].cls}" onclick="openModal('${e.id}')">
+        <div class="ev-top">${e.time?`<span class="ev-time">${e.time}</span>`:''}<span class="ev-artist">${e.star?'<span class="star">★</span>':''}${esc(e.artist)}</span></div>
+        <div class="ev-title">${esc(e.title)}${e.note?` · ${esc(e.note)}`:''}</div>
+        <div class="ev-meta">${esc(e.label||'-')} · ${STATUS[e.status].label} · ${e.stage||0}/6</div></div>`;
+    });
+    div.innerHTML=h; g.appendChild(div);
+  });
+}
 
-function list(){ document.getElementById('calWrap').style.display='none'; document.getElementById('listWrap').style.display='block';
+function renderList(){
   const w=document.getElementById('listWrap');
   const d=dated().slice().sort((a,b)=>a.date===b.date?(a.time||'').localeCompare(b.time||''):a.date.localeCompare(b.date));
-  const t=tbd(); if(!d.length&&!t.length){ w.innerHTML='<div class="empty">표시할 일정이 없습니다.</div>'; return; }
+  const t=tbdEv();
+  if(!d.length&&!t.length){ w.innerHTML='<div style="text-align:center;color:var(--text-mute);padding:50px">표시할 일정이 없습니다.</div>'; return; }
   const bm={}; d.forEach(e=>{const m=e.date.slice(0,7);(bm[m]=bm[m]||[]).push(e);}); t.forEach(e=>{(bm[e.month]=bm[e.month]||[]).push(e);});
-  let html=''; Object.keys(bm).sort().forEach(m=>{ const mo=parseInt(m.split('-')[1]), rows=bm[m];
+  let html='';
+  Object.keys(bm).sort().forEach(m=>{
+    const mo=parseInt(m.split('-')[1]), rows=bm[m];
     html+=`<div class="list-month"><h3>${m.split('-')[0]}년 ${mo}월 · ${rows.length}건</h3>
-      <table><thead><tr><th style="width:100px">발매일</th><th style="width:66px">시간</th><th>아티스트</th><th>곡 / 앨범</th><th style="width:90px">담당</th><th style="width:100px">상태</th></tr></thead><tbody>`;
-    rows.forEach(e=>{ let dc; if(e.tbd) dc='<span style="color:var(--s-hold)">미정</span>';
+    <table><thead><tr><th style="width:96px">발매일</th><th style="width:60px">시간</th><th>아티스트</th><th>곡 / 앨범</th><th style="width:130px">진행 단계</th><th style="width:86px">담당</th><th style="width:96px">상태</th></tr></thead><tbody>`;
+    rows.forEach(e=>{
+      let dc; if(e.tbd) dc=`<span style="color:var(--s-hold)">미정${e.wish?' · '+esc(e.wish):''}</span>`;
       else{ const dd=new Date(e.date), dow=['일','월','화','수','목','금','토'][dd.getDay()]; dc=`${mo}/${parseInt(e.date.slice(8))} <span style="color:var(--text-mute)">(${dow})</span>`; }
-      html+=`<tr class="row" onclick="detail('${e.id}')"><td>${dc}</td><td style="color:var(--text-dim)">${e.time||'-'}</td>
-        <td style="font-weight:700">${e.star?'<span style="color:var(--star)">★</span> ':''}${escapeHtml(e.artist)}</td>
-        <td style="color:var(--text-dim)">${escapeHtml(e.title)}${e.note?` <span class="tag-note ${e.note==='노출'?'note-open':'note-closed'}">${escapeHtml(e.note)}</span>`:''}</td>
-        <td><span class="tag-label">${escapeHtml(e.label||'-')}</span></td>
-        <td><span class="pill ${STATUS[e.status].cls}"><span class="dot"></span>${STATUS[e.status].label}</span></td></tr>`; });
-    html+='</tbody></table></div>'; });
-  w.innerHTML=html; }
+      const st=e.stage||0;
+      html+=`<tr class="row" onclick="openModal('${e.id}')"><td>${dc}</td><td style="color:var(--text-dim)">${e.time||'-'}</td>
+        <td style="font-weight:700">${e.star?'<span style="color:var(--star)">★</span> ':''}${esc(e.artist)}</td>
+        <td style="color:var(--text-dim)">${esc(e.title)}</td>
+        <td><span class="mini-seg">${STAGES.map((_,i)=>`<i class="${i<st?'on':''}"></i>`).join('')}</span><span style="font-size:11px;color:var(--text-dim)">${st?STAGES[st-1]:'기획 전'}</span></td>
+        <td><span class="tag-label">${esc(e.label||'-')}</span></td>
+        <td><span class="pill ${STATUS[e.status].cls}"><span class="dot"></span>${STATUS[e.status].label}</span></td></tr>`;
+    });
+    html+='</tbody></table></div>';
+  });
+  w.innerHTML=html;
+}
 
-function detail(id){ const e=DATA.find(x=>x.id===id); if(!e) return;
-  let dline; if(e.tbd) dline='일정 미정 ('+parseInt((e.month||'0000-00').slice(5))+'월 희망)';
-  else{ const d=new Date(e.date), dow=['일','월','화','수','목','금','토'][d.getDay()]; dline=`${e.date} (${dow})`; }
-  document.getElementById('detailBox').innerHTML=`
-    <div class="d-head"><div><div class="d-artist">${e.star?'<span style="color:var(--star)">★</span> ':''}${escapeHtml(e.artist)}</div>
-      <div class="d-title">${escapeHtml(e.title)}</div></div></div>
-    <div class="d-row"><span class="k">발매일</span><span class="v">${dline}</span></div>
-    ${e.wish?`<div class="d-row"><span class="k">희망 시기</span><span class="v">${escapeHtml(e.wish)}</span></div>`:''}
-    <div class="d-row"><span class="k">시간</span><span class="v">${e.time?e.time+(e.time==='12:00'?' (정오)':''):'미정'}</span></div>
-    <div class="d-row"><span class="k">담당/레이블</span><span class="v">${escapeHtml(e.label||'-')}</span></div>
-    ${e.note?`<div class="d-row"><span class="k">공개 여부</span><span class="v">${escapeHtml(e.note)}</span></div>`:''}
-    ${e.memo?`<div class="d-row"><span class="k">비고</span><span class="v">${escapeHtml(e.memo)}</span></div>`:''}
-    <div class="d-row"><span class="k">진행 상태</span><span class="v"><span class="pill ${STATUS[e.status].cls}"><span class="dot"></span>${STATUS[e.status].label}</span></span></div>
-    <button class="btn d-close" onclick="closeDetail()">닫기</button>`;
-  document.getElementById('overlay').classList.add('open'); }
-function closeDetail(){ document.getElementById('overlay').classList.remove('open'); }
+function renderBrief(){
+  const w=document.getElementById('briefWrap');
+  const all=allDated(); const doneN=all.filter(e=>e.status==='done').length;
+  const tbdAll=events.filter(e=>e.tbd);
+  const pct=all.length?Math.round(doneN/all.length*100):0;
+  // 월별 분포
+  const mm={}; all.forEach(e=>{ const m=parseInt(e.date.slice(5,7)); (mm[m]=mm[m]||{done:0,fix:0,plan:0});
+    if(e.status==='done')mm[m].done++; else if(e.status==='plan')mm[m].plan++; else mm[m].fix++; });
+  const maxM=Math.max(1,...Object.values(mm).map(v=>v.done+v.fix+v.plan));
+  let mbars='';
+  for(let m=1;m<=12;m++){ const v=mm[m]||{done:0,fix:0,plan:0}; const tot=v.done+v.fix+v.plan;
+    mbars+=`<div class="mbar-row"><span class="ml">${m}월</span><div class="mbar">
+      <i class="f-done" style="width:${v.done/maxM*100}%"></i><i class="f-fix" style="width:${v.fix/maxM*100}%"></i><i class="f-plan" style="width:${v.plan/maxM*100}%"></i>
+      </div><span class="mbar-cnt">${tot||''}</span></div>`; }
+  // 레이블 분포
+  const lb={}; all.forEach(e=>{ const k=e.label||'미지정'; lb[k]=(lb[k]||0)+1; });
+  const lbHtml=Object.entries(lb).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="mbar-row"><span class="ml" style="width:70px">${esc(k)}</span><div class="mbar"><i class="f-fix" style="width:${v/all.length*100}%"></i></div><span class="mbar-cnt">${v}</span></div>`).join('');
+  w.innerHTML=`
+    <div class="brief-card"><h4>연간 진행도 / 목표</h4>
+      <div class="big-num">${doneN} <span style="font-size:16px;color:var(--text-dim)">/ ${all.length}곡 완료</span></div>
+      <div class="goal-bar" style="margin:12px 0"><i style="width:${pct}%"></i></div>
+      <div class="big-sub">달성률 ${pct}% · 일정 미정 대기 ${tbdAll.length}건 포함 시 연간 목표 ${all.length+tbdAll.length}건</div></div>
+    <div class="brief-card"><h4>레이블별 발매</h4>${lbHtml}</div>
+    <div class="brief-card brief-full"><h4>월별 발매 분포 <span style="font-weight:400;color:var(--text-mute)">(초록 완료 · 파랑 확정 · 노랑 준비중)</span></h4>${mbars}</div>
+    <div class="brief-card brief-full"><h4>일정 미정 · 발매 희망 대기 (${tbdAll.length}건)</h4>
+      <table><thead><tr><th>아티스트</th><th>곡</th><th>희망 시기</th><th>진행 단계</th><th>비고</th></tr></thead><tbody>
+      ${tbdAll.map(e=>`<tr class="row" onclick="openModal('${e.id}')">
+        <td style="font-weight:700">${e.star?'★ ':''}${esc(e.artist)}</td><td>${esc(e.title)}</td>
+        <td style="color:var(--s-plan)">${esc(e.wish||parseInt((e.month||'').slice(5))+'월')}</td>
+        <td><span class="mini-seg">${STAGES.map((_,i)=>`<i class="${i<(e.stage||0)?'on':''}"></i>`).join('')}</span>${(e.stage||0)}/6</td>
+        <td style="color:var(--text-dim);font-size:12px">${esc(e.memo||'-')}</td></tr>`).join('')}
+      </tbody></table></div>`;
+}
 
-function changeMonth(dir){ curMonth+=dir; if(curMonth<0){curMonth=11;curYear--;} if(curMonth>11){curMonth=0;curYear++;} render(); }
-function goToday(){ curYear=2026; curMonth=6; render(); }
-function setView(v){ view=v; document.getElementById('viewCal').classList.toggle('active',v==='cal'); document.getElementById('viewList').classList.toggle('active',v==='list'); render(); }
-function escapeHtml(s){ return (s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-document.getElementById('searchInput').addEventListener('input',e=>{ searchTerm=e.target.value.toLowerCase().trim(); render(); });
-document.getElementById('overlay').addEventListener('click',e=>{ if(e.target.id==='overlay') closeDetail(); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDetail(); });
-buildStatusFilters(); buildDropdowns(); render();
+/* ============================================================
+   조작
+   ============================================================ */
+function setMonth(i){ curMonth=i; curYear=2026; if(view==='brief') view='cal'; render(); }
+function changeMonth(d){ curMonth+=d; if(curMonth<0){curMonth=11;curYear--;} if(curMonth>11){curMonth=0;curYear++;} render(); }
+function setView(v){ view=v; render(); }
+function toggleDone(){ includeDone=!includeDone; try{localStorage.setItem('rc_includeDone',includeDone?'1':'0');}catch(e){} render(); }
+function copyLink(){ navigator.clipboard.writeText(PUB_URL).then(()=>alert('공유 링크가 복사되었습니다!\n'+PUB_URL)).catch(()=>prompt('아래 링크를 복사하세요',PUB_URL)); }
 
-/* ── 최신 데이터 자동 로드 (data.json이 갱신되면 페이지도 자동 반영) ── */
-(async function loadRemote(){
+function buildDropdowns(){
+  const a=document.getElementById('artistFilter'), ac=a.value;
+  a.innerHTML='<option value="">전체 아티스트</option>'+[...new Set(events.map(e=>e.artist))].sort().map(x=>`<option>${esc(x)}</option>`).join(''); a.value=ac;
+  const l=document.getElementById('labelFilter'), lc=l.value;
+  const labels=[...new Set(events.map(e=>e.label).filter(Boolean))].sort();
+  l.innerHTML='<option value="">전체 레이블</option>'+labels.map(x=>`<option>${esc(x)}</option>`).join(''); l.value=lc;
+  document.getElementById('labelOptions').innerHTML=labels.map(x=>`<option value="${esc(x)}">`).join('');
+  document.getElementById('fStage').innerHTML='<option value="0">기획 전</option>'+STAGES.map((s,i)=>`<option value="${i+1}">${s} 완료 (${i+1}/6)</option>`).join('');
+}
+
+/* 모달 */
+function openModal(id=null,presetDate=null){
+  if(READONLY && !id) return;
+  document.getElementById('overlay').classList.add('open');
+  const g=x=>document.getElementById(x);
+  // 보기 전용: 입력 잠금 + 저장/삭제 숨김
+  document.querySelectorAll('.modal input,.modal select').forEach(el=>{ el.disabled=READONLY; });
+  document.querySelector('.modal .btn.lime').style.display=READONLY?'none':'';
+  if(id){ const e=events.find(x=>x.id===id);
+    g('modalTitle').textContent=READONLY?'상세 보기':'앨범 수정';
+    g('editId').value=e.id; g('fDate').value=e.tbd?'':(e.date||''); g('fTime').value=e.time||'';
+    g('fArtist').value=e.artist||''; g('fTitle').value=e.title||''; g('fLabel').value=e.label||'';
+    g('fNote').value=e.note||''; g('fStatus').value=e.status||'plan'; g('fStage').value=e.stage||0;
+    g('fWish').value=e.wish||''; g('fMemo').value=e.memo||'';
+    g('deleteBtn').style.display=READONLY?'none':'inline-flex';
+  }else{
+    g('modalTitle').textContent='앨범 추가';
+    g('editId').value=''; g('fDate').value=presetDate||''; g('fTime').value='12:00';
+    g('fArtist').value=''; g('fTitle').value=''; g('fLabel').value=''; g('fNote').value='';
+    g('fStatus').value='plan'; g('fStage').value=0; g('fWish').value=''; g('fMemo').value='';
+    g('deleteBtn').style.display='none';
+  }
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); }
+function saveEvent(){
+  const g=x=>document.getElementById(x).value;
+  const id=document.getElementById('editId').value;
+  const data={ time:g('fTime'), artist:g('fArtist').trim(), title:g('fTitle').trim(), label:g('fLabel').trim(),
+    note:g('fNote'), status:g('fStatus'), stage:parseInt(g('fStage'))||0, wish:g('fWish').trim(), memo:g('fMemo').trim(),
+    star:/도코|doko/i.test(g('fArtist')) };
+  if(!data.artist){ alert('아티스트는 필수입니다.'); return; }
+  const dv=g('fDate');
+  if(dv){ data.date=dv; data.tbd=false; }
+  else{ data.tbd=true; data.month=`2026-${String(curMonth+1).padStart(2,'0')}`; if(data.status!=='hold') data.status='hold'; }
+  if(id){ const e=events.find(x=>x.id===id); Object.keys(e).forEach(k=>{ if(k!=='id') delete e[k]; }); Object.assign(e,data); }
+  else{ data.id='e'+events.length+'_'+Math.floor(performance.now()); events.push(data); }
+  saveData(); buildDropdowns(); closeModal(); render();
+}
+function deleteEvent(){ const id=document.getElementById('editId').value; if(!id) return;
+  if(confirm('이 일정을 삭제할까요?')){ events=events.filter(x=>x.id!==id); saveData(); buildDropdowns(); closeModal(); render(); } }
+
+/* CSV / JSON */
+function exportCSV(){
+  const rows=[['발매일','시간','아티스트','곡/앨범','담당','상태','진행단계','희망시기','비고','공개']];
+  events.slice().sort((a,b)=>(a.date||a.month||'').localeCompare(b.date||b.month||'')).forEach(e=>{
+    rows.push([e.tbd?('미정('+(e.month||'')+')'):e.date, e.time||'', e.artist, e.title, e.label||'', STATUS[e.status].label,
+      (e.stage||0)+'/6 '+((e.stage||0)?STAGES[(e.stage||0)-1]:'기획 전'), e.wish||'', e.memo||'', e.note||'']);
+  });
+  const csv='﻿'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const b=new Blob([csv],{type:'text/csv'}); const u=URL.createObjectURL(b);
+  const a=document.createElement('a'); a.href=u; a.download='2026_발매일정.csv'; a.click(); URL.revokeObjectURL(u);
+}
+function exportData(){ const b=new Blob([JSON.stringify(events,null,2)],{type:'application/json'});
+  const u=URL.createObjectURL(b); const a=document.createElement('a'); a.href=u; a.download='발매일정_2026.json'; a.click(); URL.revokeObjectURL(u); }
+function importData(ev){ const f=ev.target.files[0]; if(!f) return; const r=new FileReader();
+  r.onload=()=>{ try{ const d=JSON.parse(r.result); if(Array.isArray(d)){ events=d.map((e,i)=>({...e,id:e.id||'imp'+i})); saveData(); buildDropdowns(); render(); alert('불러왔습니다. ('+events.length+'건)'); } else alert('형식 오류'); }catch(e){ alert('읽기 실패'); } };
+  r.readAsText(f); ev.target.value=''; }
+
+/* ============================================================
+   공개 링크 반영 (GitHub data.json)
+   ============================================================ */
+const SYNC_REPO_API='https://api.github.com/repos/WITHDOKO/release-calendar-2026/contents/data.json';
+async function syncToPublic(){
+  let tk=localStorage.getItem('gh_sync_token');
+  if(!tk){ tk=prompt('GitHub 토큰(ghp_로 시작)을 입력하세요.\n최초 1회만 입력하면 저장됩니다.'); if(!tk) return;
+    tk=tk.trim(); localStorage.setItem('gh_sync_token',tk); }
+  const h={'Authorization':'Bearer '+tk,'Accept':'application/vnd.github+json'};
+  document.getElementById('syncStatus').textContent='공개 링크 반영 중…';
   try{
+    let sha=null;
+    const g=await fetch(SYNC_REPO_API+'?ref=main',{headers:h,cache:'no-store'});
+    if(g.ok){ sha=(await g.json()).sha; }
+    else if(g.status===401||g.status===403){ localStorage.removeItem('gh_sync_token'); document.getElementById('syncStatus').textContent='로컬 편집 모드';
+      alert('토큰이 유효하지 않습니다.\n버튼을 다시 눌러 새 토큰을 입력해주세요.'); return; }
+    const clean=events.map(({id,...rest})=>rest);
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(clean,null,1))));
+    const body={message:'일정 업데이트 '+new Date().toISOString().slice(0,16).replace('T',' '),content};
+    if(sha) body.sha=sha;
+    const r=await fetch(SYNC_REPO_API,{method:'PUT',headers:h,body:JSON.stringify(body)});
+    if(r.ok){ document.getElementById('syncStatus').textContent='공개 반영 완료 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+      alert('✅ 공개 링크에 반영했습니다!\n약 1~2분 후 팀원 화면에 자동 적용됩니다.'); }
+    else if(r.status===401||r.status===403){ localStorage.removeItem('gh_sync_token'); document.getElementById('syncStatus').textContent='로컬 편집 모드';
+      alert('토큰 권한 오류입니다.\n버튼을 다시 눌러 새 토큰을 입력해주세요.'); }
+    else{ document.getElementById('syncStatus').textContent='반영 실패'; alert('반영 실패 (오류 '+r.status+')'); }
+  }catch(e){ document.getElementById('syncStatus').textContent='로컬 편집 모드'; alert('네트워크 오류: '+e.message); }
+}
+
+/* ============================================================
+   유틸 & 초기화
+   ============================================================ */
+function esc(s){ return (s||'').toString().replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+document.getElementById('searchInput').addEventListener('input',e=>{ searchTerm=e.target.value.toLowerCase().trim(); render(); });
+document.getElementById('overlay').addEventListener('click',e=>{ if(e.target.id==='overlay') closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+/* 보기 전용 초기화 */
+if(READONLY){
+  document.body.classList.add('readonly');
+  document.getElementById('syncStatus').textContent='보기 전용 · 자동 업데이트';
+}
+buildDropdowns(); render();
+
+/* 공개 링크에서는 최신 data.json을 자동으로 불러와 표시 */
+if(READONLY){
+  (async()=>{ try{
     const r=await fetch('data.json?ts='+Date.now(),{cache:'no-store'});
-    if(r.ok){
-      const d=await r.json();
-      if(Array.isArray(d)&&d.length){
-        DATA=d.map((e,i)=>({...e,id:'r'+i}));
-        buildDropdowns(); render();
-      }
-    }
-  }catch(e){ /* 로컬 파일로 열었거나 네트워크 오류 → 내장 데이터 사용 */ }
-})();
+    if(r.ok){ const d=await r.json();
+      if(Array.isArray(d)&&d.length){ events=d.map((e,i)=>({...e,id:'r'+i})); buildDropdowns(); render(); } }
+  }catch(e){} })();
+}
 </script>
 </body>
 </html>
