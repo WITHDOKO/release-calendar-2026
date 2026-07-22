@@ -7,13 +7,13 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
   :root{
-    --bg:#0b0f0a; --panel:#121711; --panel-2:#1a211a; --line:#242e23; --line-2:#2f3b2e;
-    --text:#e9efe6; --text-dim:#96a292; --text-mute:#5f6b5c;
-    --lime:#b8f04a; --lime-dim:rgba(184,240,74,.14); --lime-text:#0c110c;
-    --s-plan:#f0b429; --s-plan-bg:rgba(240,180,41,.15);
-    --s-fix:#7f9cf5;  --s-fix-bg:rgba(127,156,245,.15);
-    --s-done:#4ade80; --s-done-bg:rgba(74,222,128,.15);
-    --s-hold:#8b95a7; --s-hold-bg:rgba(139,149,167,.15);
+    --bg:#0f1117; --panel:#171a23; --panel-2:#1e222e; --line:#2a2f3d; --line-2:#3a4152;
+    --text:#e8eaf0; --text-dim:#9aa1b3; --text-mute:#6b7280;
+    --lime:#6c8cff; --lime-dim:rgba(108,140,255,.15); --lime-text:#ffffff;
+    --s-plan:#f5a623; --s-plan-bg:rgba(245,166,35,.16);
+    --s-fix:#3ea6ff;  --s-fix-bg:rgba(62,166,255,.16);
+    --s-done:#2ecc71; --s-done-bg:rgba(46,204,113,.16);
+    --s-hold:#8b93a7; --s-hold-bg:rgba(139,147,167,.16);
     --star:#ffd84d;
     --font:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
   }
@@ -25,8 +25,8 @@
   /* ── 상단바 ── */
   .topbar{ position:sticky; top:0; z-index:50; background:rgba(11,15,10,.88); backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line); padding:12px 24px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-  .logo{ width:38px; height:38px; border-radius:10px; background:var(--lime); color:var(--lime-text);
-    display:grid; place-items:center; font-weight:900; font-size:18px; }
+  .logo{ width:38px; height:38px; border-radius:10px; background:linear-gradient(135deg,#6c8cff,#a86cff); color:#fff;
+    display:grid; place-items:center; font-weight:900; font-size:18px; box-shadow:0 4px 14px rgba(108,140,255,.4); }
   .brand h1{ font-size:16px; font-weight:800; letter-spacing:-.2px; }
   .brand p{ font-size:10px; color:var(--text-mute); letter-spacing:2.2px; margin-top:2px; }
   .sync-pill{ font-size:11px; color:var(--text-dim); background:var(--panel-2); border:1px solid var(--line);
@@ -212,7 +212,7 @@
 <!-- 상단바 -->
 <div class="topbar">
   <div style="display:flex;align-items:center;gap:11px">
-    <div class="logo">R</div>
+    <div class="logo">🎵</div>
     <div class="brand"><h1>음원 발매 운영</h1><p>2026 RELEASE OPERATIONS</p></div>
   </div>
   <span class="sync-pill"><span class="dot"></span><span id="syncStatus">로컬 편집 모드</span></span>
