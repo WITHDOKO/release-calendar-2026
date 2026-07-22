@@ -799,13 +799,13 @@ if(IS_ADMIN&&ON_WEB&&!localStorage.getItem('gh_sync_token')){
   gate.innerHTML=`<div class="modal">
     <h2>🔐 관리자 인증</h2>
     <p style="font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:14px">
-      이 페이지에서 일정을 편집하려면 대표(도코)의 승인이 필요합니다.<br>
-      ① 닉네임 입력 → ② 요청 메시지를 복사해 <b>카카오톡으로 대표에게 전송</b> → ③ 받은 <b>접근 코드</b>를 아래에 입력</p>
+      이 페이지에서 일정을 편집하려면 승인 코드가 필요합니다.<br>
+      ① 닉네임 입력 → ② 카카오 채널 챗봇에 <b>권한신청 도코2026</b> 전송 → ③ 봇이 알려준 <b>승인 코드</b>를 아래에 입력</p>
     <div class="field"><label>① 닉네임 (변경 기록에 표시됩니다)</label><input type="text" id="gateNick" placeholder="예) 매니저 김OO"></div>
-    <div class="field"><label>② 권한 요청 — 버튼을 누르면 요청 메시지가 복사되고 대표의 카카오톡이 열립니다</label>
-      <button class="btn" style="width:100%;justify-content:center;background:#FEE500;border-color:#FEE500;color:#191919;font-weight:800" onclick="gateCopyReq()">💬 카카오톡으로 권한 신청하기</button>
-      <p style="font-size:11px;color:var(--text-mute);margin-top:6px">열린 카톡방에 붙여넣기(Ctrl+V) 후 전송하세요</p></div>
-    <div class="field"><label>③ 승인 코드 입력 (대표가 카톡으로 답장해준 코드)</label><input type="text" id="gateCode" placeholder="예) 허용0000"></div>
+    <div class="field"><label>② 권한 신청 — 버튼을 누르면 신청 문구가 복사되고 도코AI 채널 챗이 열립니다</label>
+      <button class="btn" style="width:100%;justify-content:center;background:#FEE500;border-color:#FEE500;color:#191919;font-weight:800" onclick="gateCopyReq()">💬 카카오 채널에서 권한 신청하기</button>
+      <p style="font-size:11px;color:var(--text-mute);margin-top:6px">열린 채널 챗에 붙여넣기(Ctrl+V) 후 전송하면 봇이 즉시 승인 코드를 알려줍니다</p></div>
+    <div class="field"><label>③ 승인 코드 입력 (봇이 답장으로 알려준 코드)</label><input type="text" id="gateCode" placeholder="예) 허용0000"></div>
     <div class="modal-actions">
       <button class="btn lime" style="flex:1" onclick="gateSubmit()">인증하고 시작하기</button>
     </div>
@@ -813,14 +813,14 @@ if(IS_ADMIN&&ON_WEB&&!localStorage.getItem('gh_sync_token')){
   </div>`;
   document.body.appendChild(gate);
 }
-const KAKAO_REQ_URL='https://open.kakao.com/o/szaqzfFi';
+const KAKAO_REQ_URL='http://pf.kakao.com/_DuIxnX/chat';
 function gateCopyReq(){
   const n=(document.getElementById('gateNick').value||'').trim();
   if(!n){ alert('닉네임을 먼저 입력해주세요.'); return; }
-  const msg=`[2026 발매 캘린더] 관리자 권한 요청\n닉네임: ${n}\n승인하시면 접근 코드를 답장으로 보내주세요.`;
+  const msg=`권한신청 도코2026`;
   const go=()=>window.open(KAKAO_REQ_URL,'_blank');
-  navigator.clipboard.writeText(msg).then(()=>{ alert('요청 메시지가 복사되었습니다!\n지금 열리는 카카오톡 채팅방에 붙여넣기(Ctrl+V) 후 전송하세요.'); go(); })
-    .catch(()=>{ prompt('아래 내용을 복사한 뒤, 확인을 누르면 카카오톡이 열립니다',msg); go(); });
+  navigator.clipboard.writeText(msg).then(()=>{ alert('신청 문구가 복사되었습니다!\n지금 열리는 도코AI 채널 챗에 붙여넣기(Ctrl+V) 후 전송하세요.\n봇이 즉시 승인 코드를 알려드립니다.'); go(); })
+    .catch(()=>{ prompt('아래 문구를 복사한 뒤, 확인을 누르면 채널 챗이 열립니다',msg); go(); });
 }
 /* 승인 코드로 잠긴 열쇠 풀기 (AES-256-GCM · 코드 없이는 복호화 불가) */
 const ENC={salt:'DnRe/uAw9mNDFeAZdPY9cA==',iv:'1oxicVr4SqwHyEyO',ct:'2uozX75VEN6txYUHyzg5JC3G73diShSHre9WGaV7R6qdwnNuM22zdezNdSwNAdpHFj+RNYS2JVA='};
