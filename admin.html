@@ -799,13 +799,13 @@ if(IS_ADMIN&&ON_WEB&&!localStorage.getItem('gh_sync_token')){
   gate.innerHTML=`<div class="modal">
     <h2>🔐 관리자 인증</h2>
     <p style="font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:14px">
-      이 페이지에서 일정을 편집하려면 승인 코드가 필요합니다.<br>
-      ① 닉네임 입력 → ② 카카오 채널 챗봇에 <b>권한신청 도코2026</b> 전송 → ③ 봇이 알려준 <b>승인 코드</b>를 아래에 입력</p>
+      이 페이지에서 일정을 편집하려면 대표(도코)의 승인이 필요합니다.<br>
+      ① 닉네임 입력 → ② 카카오 채널로 <b>권한 신청 전송</b> → ③ 대표 확인 후 답장으로 받은 <b>승인 코드</b>를 아래에 입력</p>
     <div class="field"><label>① 닉네임 (변경 기록에 표시됩니다)</label><input type="text" id="gateNick" placeholder="예) 매니저 김OO"></div>
     <div class="field"><label>② 권한 신청 — 버튼을 누르면 신청 문구가 복사되고 도코AI 채널 챗이 열립니다</label>
       <button class="btn" style="width:100%;justify-content:center;background:#FEE500;border-color:#FEE500;color:#191919;font-weight:800" onclick="gateCopyReq()">💬 카카오 채널에서 권한 신청하기</button>
-      <p style="font-size:11px;color:var(--text-mute);margin-top:6px">열린 채널 챗에 붙여넣기(Ctrl+V) 후 전송하면 봇이 즉시 승인 코드를 알려줍니다</p></div>
-    <div class="field"><label>③ 승인 코드 입력 (봇이 답장으로 알려준 코드)</label><input type="text" id="gateCode" placeholder="예) 허용0000"></div>
+      <p style="font-size:11px;color:var(--text-mute);margin-top:6px">열린 채널 챗에 붙여넣기(Ctrl+V) 후 전송 → 대표가 확인하고 승인 코드를 직접 답장드립니다</p></div>
+    <div class="field"><label>③ 승인 코드 입력 (대표가 답장으로 보내준 코드)</label><input type="text" id="gateCode" placeholder="예) 허용0000"></div>
     <div class="modal-actions">
       <button class="btn lime" style="flex:1" onclick="gateSubmit()">인증하고 시작하기</button>
     </div>
@@ -817,9 +817,9 @@ const KAKAO_REQ_URL='http://pf.kakao.com/_DuIxnX/chat';
 function gateCopyReq(){
   const n=(document.getElementById('gateNick').value||'').trim();
   if(!n){ alert('닉네임을 먼저 입력해주세요.'); return; }
-  const msg=`권한신청 도코2026`;
+  const msg=`[발매 캘린더] 관리자 권한 신청\n닉네임: ${n}\n승인 부탁드립니다.`;
   const go=()=>window.open(KAKAO_REQ_URL,'_blank');
-  navigator.clipboard.writeText(msg).then(()=>{ alert('신청 문구가 복사되었습니다!\n지금 열리는 도코AI 채널 챗에 붙여넣기(Ctrl+V) 후 전송하세요.\n봇이 즉시 승인 코드를 알려드립니다.'); go(); })
+  navigator.clipboard.writeText(msg).then(()=>{ alert('신청 문구가 복사되었습니다!\n지금 열리는 도코AI 채널 챗에 붙여넣기(Ctrl+V) 후 전송하세요.\n대표가 확인 후 승인 코드를 답장드립니다.'); go(); })
     .catch(()=>{ prompt('아래 문구를 복사한 뒤, 확인을 누르면 채널 챗이 열립니다',msg); go(); });
 }
 /* 승인 코드로 잠긴 열쇠 풀기 (AES-256-GCM · 코드 없이는 복호화 불가) */
